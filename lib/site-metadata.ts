@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { profile } from '@/lib/site-data';
 
 export const siteUrl = 'https://academic.solitudinis.cc';
-export const siteTitle = `${profile.name} — Research & Writing`;
+export const siteTitle = "Ren's Homepage";
 export const siteDescription = `${profile.name} is a research assistant at ${profile.institution} studying LLM reasoning, self-correction, efficient inference, and multi-agent intelligence.`;
 
 type PageMetadataOptions = {

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { ArrowDown, Search, X } from 'lucide-react';
+import { ArrowDown, ArrowUp, Search, X } from 'lucide-react';
 import { news } from '@/lib/site-data';
 import { formatDate } from '@/lib/format';
 
@@ -23,6 +23,8 @@ export function NewsUpdates() {
     `${item.date} ${formatDate(item.date)} ${item.type} ${item.text}`.toLocaleLowerCase().includes(search),
   );
   const visible = matches.slice(0, visibleCount);
+  const canShowLess = visibleCount > pageSize;
+  const canShowMore = visible.length < matches.length;
 
   function changeQuery(value: string) {
     setQuery(value);
@@ -70,11 +72,18 @@ export function NewsUpdates() {
           {matches.length === 0 && <tr><td colSpan={3} className="news-empty">No updates found. Try another date, category, or keyword.</td></tr>}
         </tbody>
       </table>
-      {visible.length < matches.length && (
+      {(canShowLess || canShowMore) && (
         <div className="news-pagination">
-        <button className="news-more" type="button" aria-controls="news-table" onClick={() => setVisibleCount((count) => count + pageSize)}>
-          See more <ArrowDown size={15} strokeWidth={1.5} aria-hidden="true" />
-        </button>
+        {canShowLess && (
+          <button className="news-less" type="button" aria-controls="news-table" onClick={() => setVisibleCount(pageSize)}>
+            See less <ArrowUp size={15} strokeWidth={1.5} aria-hidden="true" />
+          </button>
+        )}
+        {canShowMore && (
+          <button className="news-more" type="button" aria-controls="news-table" onClick={() => setVisibleCount((count) => count + pageSize)}>
+            See more <ArrowDown size={15} strokeWidth={1.5} aria-hidden="true" />
+          </button>
+        )}
         </div>
       )}
       </div>

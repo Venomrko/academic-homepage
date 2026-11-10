@@ -219,9 +219,9 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .news-title a::after { content: ''; position: absolute; inset: 0; }
 .news-table tbody tr:has(.news-title a):is(:hover, :focus-within) :is(.news-date, .news-category, .news-title a) { color: var(--research-ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .news-table .news-empty { padding-block: 36px; color: var(--muted); text-align: center; }
-.news-pagination { margin-top: auto; padding-top: 32px; }
-.news-more { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 42px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: color-mix(in srgb, var(--soft-surface) 45%, transparent); font-size: 14px; transition: background .18s, color .18s; }
-.news-more:hover { background: var(--soft-surface); color: var(--color-fd-foreground); }
+.news-pagination { display: grid; gap: 8px; margin-top: auto; padding-top: 32px; }
+.news-more, .news-less { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 42px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: color-mix(in srgb, var(--soft-surface) 45%, transparent); font-size: 14px; transition: background .18s, color .18s; }
+.news-more:hover, .news-less:hover { background: var(--soft-surface); color: var(--color-fd-foreground); }
 .honors-section { display: flex; flex-direction: column; min-width: 0; padding-left: 28px; border-left: 1px solid var(--line); }
 .honors-section > h2 { margin-top: 10px; margin-bottom: 35px; font-family: var(--font-serif); font-size: 20px; line-height: 1.4; font-weight: 400; letter-spacing: -.2px; color: var(--research-ink); }
 .honors-list { list-style: none; margin: 0; padding: 0; }

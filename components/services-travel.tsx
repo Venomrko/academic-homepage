@@ -125,7 +125,7 @@ export function ServicesTravel({
         </ul>
       </div>
       {hasOverflow && <button className="services-travel-toggle" type="button" aria-expanded={isExpanded} aria-controls="services-travel-list" onClick={() => setExpanded((current) => !current)}>
-        {isExpanded ? <>Show less <ArrowUp size={13} aria-hidden="true" /></> : <>See more <ArrowDown size={13} aria-hidden="true" /></>}
+        {isExpanded ? <>See less <ArrowUp size={13} aria-hidden="true" /></> : <>See more <ArrowDown size={13} aria-hidden="true" /></>}
       </button>}
     </div>
   </aside>;

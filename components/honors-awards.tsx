@@ -30,7 +30,7 @@ export function HonorsAwards({ items }: { items: readonly Honor[] }) {
         <div className="honors-controls">
           {visibleCount > pageSize && (
             <button className="honors-less" type="button" aria-controls="honors-list" onClick={() => setVisibleCount(pageSize)}>
-              Show less <ArrowUp size={13} aria-hidden="true" />
+              See less <ArrowUp size={13} aria-hidden="true" />
             </button>
           )}
           {remaining > 0 && (
