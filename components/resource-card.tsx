@@ -13,7 +13,7 @@ type ResourceCardProps = {
   footer?: ReactNode;
   featured?: boolean;
   artwork?: ReactNode;
-  artworkLayout?: 'side' | 'inline';
+  artworkLayout?: 'side' | 'inline' | 'header';
   artworkSide?: 'left' | 'right';
   artworkClassName?: string;
   className?: string;
@@ -27,8 +27,16 @@ export function ResourceCard({
   const label = kind === 'project' ? 'Project' : kind === 'journal' ? 'Personal essays' : 'Article';
   const titleId = `resource-${encodeURIComponent(href)}`;
   const hasArtwork = artwork != null || Boolean(artworkClassName);
+  const isHeaderArtwork = hasArtwork && artworkLayout === 'header';
   const sideArtwork = hasArtwork && artworkLayout === 'side';
-  const art = hasArtwork ? <div className={`resource-card-art${artworkLayout === 'inline' ? ' resource-card-art-inline' : ''} ${artworkClassName}`} aria-hidden="true">{artwork}</div> : null;
+  const art = hasArtwork ? (
+    <div
+      className={`resource-card-art${artworkLayout === 'inline' ? ' resource-card-art-inline' : ''}${isHeaderArtwork ? ' resource-card-art-header' : ''} ${artworkClassName}`.trim()}
+      aria-hidden="true"
+    >
+      {artwork}
+    </div>
+  ) : null;
 
   return (
     <Link href={href} className={`resource-card${featured ? ' resource-card-featured' : ''} ${className}`.trim()} aria-labelledby={titleId}>
@@ -39,7 +47,14 @@ export function ResourceCard({
       <div className={`resource-card-body${sideArtwork ? ` has-artwork artwork-${artworkSide}` : ''}`}>
         {sideArtwork && artworkSide === 'left' && art}
         <div className="resource-card-copy">
-          <h2 id={titleId} lang={lang}>{title}{titleSuffix}</h2>
+          {isHeaderArtwork ? (
+            <div className="resource-card-head-row">
+              <h2 id={titleId} lang={lang}>{title}{titleSuffix}</h2>
+              {art}
+            </div>
+          ) : (
+            <h2 id={titleId} lang={lang}>{title}{titleSuffix}</h2>
+          )}
           {description && <p className="resource-card-description" lang={lang}>{description}</p>}
           {artworkLayout === 'inline' && art}
           <div className="resource-card-footer">

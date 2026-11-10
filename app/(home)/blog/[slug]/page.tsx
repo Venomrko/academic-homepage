@@ -42,11 +42,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <h1 lang={page.data.lang}>{page.data.title}</h1>
           <p className="article-description" lang={page.data.lang}>{page.data.description}</p>
         </div>
-        {page.data.section !== 'life' && (
-          <div className="article-heading-stamp" aria-hidden="true">
-            <ConceptStamp slug={slug} size="lg" />
-          </div>
-        )}
+        <div className="article-heading-stamp" aria-hidden="true">
+          <ConceptStamp slug={slug} size="lg" />
+        </div>
       </div>
       <div className="article-meta">
         <span className="author-avatar">{profile.initials}</span>

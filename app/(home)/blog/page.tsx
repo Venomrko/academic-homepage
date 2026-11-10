@@ -47,8 +47,7 @@ export default function BlogPage() {
         metadata={<time dateTime={post.data.date}>{formatDate(post.data.date)}</time>}
         footer={<span className="resource-card-reading-time">{post.data.readingTime} read</span>}
         artwork={<ConceptStamp slug={post.slugs[0]} size="md" />}
-        artworkLayout="side"
-        artworkSide="right"
+        artworkLayout="header"
         artworkClassName="concept-stamp-art"
       />)}
       {workPosts.length === 0 && <BlogEmptyState section="work" />}

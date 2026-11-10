@@ -456,10 +456,12 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .resource-card-featured .resource-card-copy { padding: 30px 32px; }
 .resource-card-copy h2 { font-family: var(--font-serif); font-size: 24px; line-height: 1.12; font-weight: 400; letter-spacing: -.35px; color: var(--research-ink); overflow-wrap: anywhere; }
 .resource-card-featured .resource-card-copy h2 { font-size: 36px; line-height: 1.08; letter-spacing: -.65px; }
+.resource-card-head-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; width: 100%; }
+.resource-card-head-row h2 { flex: 1 1 auto; min-width: 0; margin: 0; }
+.resource-card-head-row .resource-card-art-header { flex: 0 0 auto; margin-top: 2px; }
 .resource-card-description { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--muted); margin-top: 12px; }
-.research-story .resource-card-description { display: block; -webkit-line-clamp: unset; overflow: visible; }
-.research-story .resource-card-body.has-artwork { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: start; }
-.research-story .concept-stamp-art { display: flex; align-items: flex-start; justify-content: flex-end; padding: 24px 24px 0 0; }
+.research-story .resource-card-description,
+.life-story .resource-card-description { display: block; -webkit-line-clamp: unset; overflow: visible; margin-top: 14px; }
 .resource-card-footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; margin-top: auto; padding-top: 30px; }
 .resource-card-footer-meta { min-width: 0; font-family: var(--font-sans); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
 .resource-card-reading-time { display: block; color: var(--quiet); margin-top: 5px; }
@@ -472,10 +474,10 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .resource-card-art-inline > .project-visual { padding: 0; }
 .resource-card-art-inline > .project-visual svg { height: 116px; }
 .project-card .resource-card-description { display: block; overflow: visible; }
-.project-card .resource-card-art-inline { margin-top: auto; padding-top: 24px; }
-.project-card .resource-card-art-inline > .project-visual { border: 1px solid var(--line); border-radius: 9px; overflow: hidden; transition: border-color .2s ease; }
+.project-card .resource-card-art-inline { width: 100%; margin-top: auto; padding-top: 20px; }
+.project-card .resource-card-art-inline > .project-visual { width: 100%; aspect-ratio: 2 / 1; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--visual-bg); transition: border-color .2s ease; padding: 0; display: block; }
 .project-card:hover .resource-card-art-inline > .project-visual { border-color: color-mix(in srgb, var(--project-ink) 40%, var(--line)); }
-.project-card .resource-card-art-inline > .project-visual svg { height: 154px; }
+.project-card .resource-card-art-inline > .project-visual svg { display: block; width: 100%; height: 100%; }
 .project-card .resource-card-footer { margin-top: 0; padding-top: 24px; }
 .project-visual { width: 100%; border-bottom: 1px solid var(--line); background: var(--visual-bg); }
 .project-visual svg { display: block; width: 100%; }
@@ -653,6 +655,14 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
   background: var(--surface);
   box-shadow: 0 4px 20px rgba(0, 0, 0, .03);
 }
+.life-journal-hero .life-journal-illustration {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border: none;
+  border-radius: 0;
+}
 .life-journal-hero svg {
   display: block;
   width: 100%;
@@ -683,9 +693,9 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
   width: 100%;
   height: 100%;
 }
-.concept-stamp.stamp-size-sm { width: 64px; height: 64px; }
-.concept-stamp.stamp-size-md { width: 82px; height: 82px; }
-.concept-stamp.stamp-size-lg { width: 100px; height: 100px; }
+.concept-stamp.stamp-size-sm { width: 56px; height: 56px; border-radius: 10px; }
+.concept-stamp.stamp-size-md { width: 76px; height: 76px; border-radius: 12px; }
+.concept-stamp.stamp-size-lg { width: 96px; height: 96px; border-radius: 14px; }
 
 /* Light Theme Stamp Palettes (Anthropic verified tokens) */
 .stamp-cognitive { --stamp-bg: #cbcadb; --stamp-ink: #141413; --stamp-carrier: #faf9f5; --stamp-accent: #d97757; }
@@ -694,6 +704,12 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .stamp-surprise { --stamp-bg: #ebcece; --stamp-ink: #141413; --stamp-carrier: #faf9f5; --stamp-accent: #d97757; }
 .stamp-empirical { --stamp-bg: #e3dacc; --stamp-ink: #141413; --stamp-carrier: #faf9f5; --stamp-accent: #d97757; }
 .stamp-lattice { --stamp-bg: #e3dacc; --stamp-ink: #141413; --stamp-carrier: #faf9f5; --stamp-accent: #d97757; }
+.stamp-fuji { --stamp-bg: #b8d3e5; --stamp-ink: #141413; --stamp-carrier: #faf9f5; --stamp-accent: #d97757; }
+.stamp-okinawa { --stamp-bg: #bcd1ca; --stamp-ink: #141413; --stamp-carrier: #faf9f5; --stamp-accent: #d97757; }
+.stamp-vienna { --stamp-bg: #e3dacc; --stamp-ink: #141413; --stamp-carrier: #faf9f5; --stamp-accent: #d97757; }
+.stamp-seoul { --stamp-bg: #cbcadb; --stamp-ink: #141413; --stamp-carrier: #faf9f5; --stamp-accent: #d97757; }
+.stamp-europe { --stamp-bg: #e3dacc; --stamp-ink: #141413; --stamp-carrier: #faf9f5; --stamp-accent: #d97757; }
+.stamp-journal { --stamp-bg: #e8decf; --stamp-ink: #141413; --stamp-carrier: #faf9f5; --stamp-accent: #d97757; }
 
 /* Dark Theme Stamp Palettes */
 .dark .stamp-cognitive { --stamp-bg: #262434; --stamp-ink: #f5f3ec; --stamp-carrier: #1a1824; --stamp-accent: #e08567; }
@@ -702,6 +718,12 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .dark .stamp-surprise { --stamp-bg: #322325; --stamp-ink: #f5f3ec; --stamp-carrier: #221719; --stamp-accent: #e08567; }
 .dark .stamp-empirical { --stamp-bg: #2c2721; --stamp-ink: #f5f3ec; --stamp-carrier: #1e1b16; --stamp-accent: #e08567; }
 .dark .stamp-lattice { --stamp-bg: #2c2721; --stamp-ink: #f5f3ec; --stamp-carrier: #1e1b16; --stamp-accent: #e08567; }
+.dark .stamp-fuji { --stamp-bg: #1f2c38; --stamp-ink: #f5f3ec; --stamp-carrier: #151f28; --stamp-accent: #e08567; }
+.dark .stamp-okinawa { --stamp-bg: #222e29; --stamp-ink: #f5f3ec; --stamp-carrier: #17201c; --stamp-accent: #e08567; }
+.dark .stamp-vienna { --stamp-bg: #2c2721; --stamp-ink: #f5f3ec; --stamp-carrier: #1e1b16; --stamp-accent: #e08567; }
+.dark .stamp-seoul { --stamp-bg: #262434; --stamp-ink: #f5f3ec; --stamp-carrier: #1a1824; --stamp-accent: #e08567; }
+.dark .stamp-europe { --stamp-bg: #2c2721; --stamp-ink: #f5f3ec; --stamp-carrier: #1e1b16; --stamp-accent: #e08567; }
+.dark .stamp-journal { --stamp-bg: #2f2a24; --stamp-ink: #f5f3ec; --stamp-carrier: #1f1b16; --stamp-accent: #e08567; }
 
 .resource-card:hover .concept-stamp {
   transform: translateY(-2.5px);
