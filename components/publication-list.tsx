@@ -101,44 +101,6 @@ function PublicationEntry({ paper }: { paper: Publication }) {
               )}
             </div>
           )}
-          {abstract && (
-            <div
-              className="publication-panel"
-              id={abstractId}
-              role="region"
-              aria-labelledby={`${abstractId}-trigger`}
-              aria-hidden={!abstractOpen}
-              inert={!abstractOpen}
-              data-open={abstractOpen}
-            >
-              <div className="publication-panel-inner">
-                <p className="publication-abstract">{abstract}</p>
-              </div>
-            </div>
-          )}
-          {citation && (
-            <div
-              className="publication-panel"
-              id={citationId}
-              role="region"
-              aria-labelledby={`${citationId}-trigger`}
-              aria-hidden={!citationOpen}
-              inert={!citationOpen}
-              data-open={citationOpen}
-            >
-              <div className="publication-panel-inner">
-                <div className="citation-box">
-                  <button type="button" onClick={copyCitation} className="citation-copy">
-                    {copyState === 'copied' ? <Check size={14} /> : <Copy size={14} />}
-                    {copyState === 'copied' ? 'Copied' : 'Copy'}
-                  </button>
-                  <pre>{citation}</pre>
-                  {copyState === 'copied' && <span className="sr-only" role="status">Citation copied to clipboard.</span>}
-                  {copyState === 'error' && <p role="status">Copy is unavailable. Select the citation text to copy it.</p>}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
         {paper.image && (
           <figure className="publication-image">
@@ -150,6 +112,44 @@ function PublicationEntry({ paper }: { paper: Publication }) {
               sizes="(max-width: 767px) 260px, (max-width: 1200px) 240px, 260px"
             />
           </figure>
+        )}
+        {abstract && (
+          <div
+            className="publication-panel"
+            id={abstractId}
+            role="region"
+            aria-labelledby={`${abstractId}-trigger`}
+            aria-hidden={!abstractOpen}
+            inert={!abstractOpen}
+            data-open={abstractOpen}
+          >
+            <div className="publication-panel-inner">
+              <p className="publication-abstract">{abstract}</p>
+            </div>
+          </div>
+        )}
+        {citation && (
+          <div
+            className="publication-panel"
+            id={citationId}
+            role="region"
+            aria-labelledby={`${citationId}-trigger`}
+            aria-hidden={!citationOpen}
+            inert={!citationOpen}
+            data-open={citationOpen}
+          >
+            <div className="publication-panel-inner">
+              <div className="citation-box">
+                <button type="button" onClick={copyCitation} className="citation-copy">
+                  {copyState === 'copied' ? <Check size={14} /> : <Copy size={14} />}
+                  {copyState === 'copied' ? 'Copied' : 'Copy'}
+                </button>
+                <pre>{citation}</pre>
+                {copyState === 'copied' && <span className="sr-only" role="status">Citation copied to clipboard.</span>}
+                {copyState === 'error' && <p role="status">Copy is unavailable. Select the citation text to copy it.</p>}
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </article>
