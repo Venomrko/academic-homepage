@@ -645,29 +645,6 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
   overflow: hidden;
   border: 1px solid var(--line);
 }
-.life-journal-hero {
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto 36px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--surface);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, .03);
-}
-.life-journal-hero .life-journal-illustration {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  border: none;
-  border-radius: 0;
-}
-.life-journal-hero svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
 .journal-paper { fill: var(--journal-paper); }
 .journal-lilac { fill: var(--journal-clay); }
 .journal-clay { fill: var(--journal-clay); }
