@@ -32,7 +32,13 @@ npm run test:e2e -- --project=phone-dark
 npm run test:e2e -- --project=desktop-light --grep "publication"
 ```
 
-GitHub Actions performs the same type check, production build, and browser
-suite on pushes and pull requests. Download `browser-regression-report` from
+GitHub Actions performs the same type check and browser suite on pushes and
+pull requests. It uses `npm run build:cloudflare` for the production build,
+which also packages the OpenNext Worker and assets. Run that command locally
+when changing `wrangler.jsonc`, `open-next.config.ts`, or deployment dependencies.
+`npx wrangler deploy --dry-run` validates the resulting Worker bundle without
+publishing it.
+
+Download `browser-regression-report` from
 the run's artifacts to inspect screenshots or failure traces. Reports are
 retained for 14 days; generated local reports stay outside Git.

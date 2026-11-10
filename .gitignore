@@ -1,6 +1,9 @@
 node_modules/
 .next/
 .next-build-check/
+.open-next/
+.wrangler/
+.dev.vars*
 .source/
 .logs/
 .env*

@@ -103,15 +103,33 @@ commands and review instructions.
 
 ## Deployment
 
-The repository is suitable for deployment from GitHub to a Next.js-compatible host. The production site is deployed on Cloudflare and uses the `npm run build` command.
+The production site runs on Cloudflare Workers through the OpenNext adapter.
+`wrangler.jsonc` and `open-next.config.ts` define the Worker, static assets,
+image binding, and R2 incremental cache. Adapter and Wrangler versions are
+locked with the project dependencies.
 
-For a new deployment, configure the host to:
+Configure Cloudflare Workers Builds with:
 
-1. Install dependencies with `npm install`.
-2. Build with `npm run build`.
-3. Use the generated Next.js application according to the host's Next.js deployment workflow.
+| Setting | Production (`main`) | Branch previews |
+| --- | --- | --- |
+| Build command | `npm run build:cloudflare` | `npm run build:cloudflare` |
+| Deploy command | `npx opennextjs-cloudflare deploy` | `npx wrangler preview` |
 
-Set the canonical URL in `lib/site-metadata.ts` before deploying a fork.
+The `previews` block supplies Preview-specific bindings. Preview deployments
+use `academic-homepage-preview-cache`; production uses
+`academic-homepage-opennext-cache`. Create both R2 buckets before deploying.
+Production's self-reference service binding is deliberately absent from
+Previews, so preview requests do not call the production Worker.
+
+For an authenticated local deployment, use `npm run deploy:cloudflare`.
+`npm run preview:cloudflare` publishes the current branch as a remote Cloudflare
+Preview; it does not start a local development server. Continue to use
+`npm run dev` for local development.
+
+Before deploying a fork, update the Worker name, self-reference binding, and
+bucket names in `wrangler.jsonc`, and the canonical URL in
+`lib/site-metadata.ts`. Other Next.js-compatible hosts can still use
+`npm run build` and their normal Next.js deployment workflow.
 
 ## License
 
