@@ -477,12 +477,48 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .project-card .resource-card-footer { margin-top: 0; padding-top: 24px; }
 .project-visual { width: 100%; border-bottom: 1px solid var(--line); background: var(--visual-bg); }
 .project-visual svg { display: block; width: 100%; }
-.visual-climate { --project-ink: #354c39; --visual-bg: #e9eee3; --visual-token: #faf8ef; --visual-active: #b1c79c; }
-.visual-twin { --project-ink: #364f64; --visual-bg: #e9eef0; --visual-token: #faf8ef; --visual-active: #a7bed1; }
-.visual-ledger { --project-ink: #534967; --visual-bg: #efebf1; --visual-token: #faf8ef; --visual-active: #c6bdd9; }
-.dark .visual-climate { --project-ink: #ebc9b7; --visual-bg: #262624; --visual-token: #1a1918; --visual-active: #629987; }
-.dark .visual-twin { --project-ink: #dedcd1; --visual-bg: #262624; --visual-token: #1a1918; --visual-active: #6a9bcc; }
-.dark .visual-ledger { --project-ink: #dedcd1; --visual-bg: #262624; --visual-token: #1a1918; --visual-active: #827dbd; }
+.visual-climate {
+  --project-ink: #141413;
+  --visual-bg: #bcd1ca; /* Anthropic cactus */
+  --visual-token: #faf9f5; /* Anthropic ivory carrier */
+  --visual-accent: #d97757; /* Anthropic clay */
+  --visual-secondary: #788c5d; /* Anthropic olive */
+}
+.visual-twin {
+  --project-ink: #141413;
+  --visual-bg: #cbcadb; /* Anthropic heather */
+  --visual-token: #faf9f5; /* Anthropic ivory carrier */
+  --visual-accent: #d97757; /* Anthropic clay */
+  --visual-secondary: #6a9bcc; /* Anthropic sky */
+}
+.visual-ledger {
+  --project-ink: #141413;
+  --visual-bg: #e3dacc; /* Anthropic oat */
+  --visual-token: #faf9f5; /* Anthropic ivory carrier */
+  --visual-accent: #d97757; /* Anthropic clay */
+  --visual-secondary: #c46686; /* Anthropic fig */
+}
+.dark .visual-climate {
+  --project-ink: #f5f3ec;
+  --visual-bg: #222e29;
+  --visual-token: #171f1c;
+  --visual-accent: #e08567;
+  --visual-secondary: #8aa872;
+}
+.dark .visual-twin {
+  --project-ink: #f5f3ec;
+  --visual-bg: #262434;
+  --visual-token: #1b1926;
+  --visual-accent: #e08567;
+  --visual-secondary: #7da3cf;
+}
+.dark .visual-ledger {
+  --project-ink: #f5f3ec;
+  --visual-bg: #2d2822;
+  --visual-token: #201c17;
+  --visual-accent: #e08567;
+  --visual-secondary: #d17c9a;
+}
 .project-art-line, .project-art-paper, .project-art-accent, .project-art-leaf, .project-art-link { stroke: var(--project-ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .project-art-paper { fill: var(--visual-token); }
 .project-art-accent, .project-art-leaf { fill: var(--visual-active); }
