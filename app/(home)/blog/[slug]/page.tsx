@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { ArrowLeft } from 'lucide-react';
 import { InlineTOC } from 'fumadocs-ui/components/inline-toc';
+import { ConceptStamp } from '@/components/concept-stamp';
 import { blog } from '@/lib/source';
 import { profile } from '@/lib/site-data';
 import { formatDate } from '@/lib/format';
@@ -35,9 +36,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <ArrowLeft size={15} aria-hidden="true" /> {page.data.section === 'life' ? 'Personal essays' : 'All notes'}
     </Link>
     <header className="article-heading">
-      <div className="eyebrow" lang={page.data.lang}>{page.data.category}</div>
-      <h1 lang={page.data.lang}>{page.data.title}</h1>
-      <p className="article-description" lang={page.data.lang}>{page.data.description}</p>
+      <div className="article-heading-wrapper">
+        <div className="article-heading-main">
+          <div className="eyebrow" lang={page.data.lang}>{page.data.category}</div>
+          <h1 lang={page.data.lang}>{page.data.title}</h1>
+          <p className="article-description" lang={page.data.lang}>{page.data.description}</p>
+        </div>
+        {page.data.section !== 'life' && (
+          <div className="article-heading-stamp" aria-hidden="true">
+            <ConceptStamp slug={slug} size="lg" />
+          </div>
+        )}
+      </div>
       <div className="article-meta">
         <span className="author-avatar">{profile.initials}</span>
         <span>{profile.name}</span>

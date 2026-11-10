@@ -1,6 +1,7 @@
 import { PageHeading } from '@/components/section-heading';
 import { ResourceCard } from '@/components/resource-card';
 import { LifeJournalIllustration } from '@/components/life-journal-illustration';
+import { ConceptStamp } from '@/components/concept-stamp';
 import { BlogEmptyState } from '@/components/blog-empty-state';
 import { blog } from '@/lib/source';
 import { formatDate } from '@/lib/format';
@@ -45,6 +46,10 @@ export default function BlogPage() {
         description={post.data.description}
         metadata={<time dateTime={post.data.date}>{formatDate(post.data.date)}</time>}
         footer={<span className="resource-card-reading-time">{post.data.readingTime} read</span>}
+        artwork={<ConceptStamp slug={post.slugs[0]} size="md" />}
+        artworkLayout="side"
+        artworkSide="right"
+        artworkClassName="concept-stamp-art"
       />)}
       {workPosts.length === 0 && <BlogEmptyState section="work" />}
     </div>

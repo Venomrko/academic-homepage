@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { PageHeading } from '@/components/section-heading';
 import { ResourceCard } from '@/components/resource-card';
+import { LifeJournalIllustration } from '@/components/life-journal-illustration';
 import { BlogEmptyState } from '@/components/blog-empty-state';
 import { blog } from '@/lib/source';
 import { formatDate } from '@/lib/format';
@@ -22,6 +23,9 @@ export default function PersonalEssaysPage() {
   return <main id="main-content" className="site-container inner-page">
     <Link href="/blog" className="back-link"><ArrowLeft size={15} aria-hidden="true" /> Blog</Link>
     <PageHeading title="A space for life" />
+    <div className="life-journal-hero life-journal-art" aria-hidden="true">
+      <LifeJournalIllustration />
+    </div>
     <div className="resource-grid">
       {posts.map((post) => <ResourceCard
         key={post.url}
