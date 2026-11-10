@@ -1,0 +1,67 @@
+---
+title: "How much thinking does an AI really need?"
+description: "An AI can spend longer on a problem and still repeat the same mistake. What makes an extra reasoning step worth its cost—and can a model learn from that effort before you ask the next question?"
+date: '2026-11-10'
+category: ICML · IJCAI · NeurIPS
+section: work
+lang: en
+readingTime: 5 min
+latestConferenceDate: '2026-12-06'
+draft: false
+---
+
+An AI is working through a difficult problem. The answer takes longer to arrive. More lines appear on the screen. Some establish useful facts; others restate what the model has already said. A second attempt may take a different route, or make the same mistake in different words.
+
+Extra effort has value only if it changes what the system can achieve. Yet removing steps indiscriminately can break the reasoning we hoped to preserve.
+
+Three of my projects examine this problem at different points: preparing shorter examples for training, exploring alternatives while answering, and learning from revisions so that less work has to be repeated later. Each asks what a particular piece of computation is buying.
+
+## Keep the steps that carry the answer
+
+Editing a worked solution is harder than deleting its longest sentences. A small phrase such as “otherwise” may connect two cases. Removing it can destroy the argument while barely changing the word count.
+
+[Adaptive GoGI-Skip](/publications#publication-gogi-skip) starts by asking which parts of a reasoning trace matter to the final answer. A trace is the sequence of intermediate text a model produces while solving a problem; its small text units are called tokens.
+
+During preparation of the training data, the correct final answer is available. We can therefore measure how sensitive the model's prediction of that answer is to the internal representation of each token in the worked solution. This supplies a goal-related clue about what to keep.
+
+That clue is incomplete. A token with a weak signal may still hold a fragile part of the argument together. The compression rule also examines uncertainty along the recorded reasoning. Around uncertain junctions, it retains more material and limits consecutive deletions. It can remove more where the continuation is relatively settled.
+
+The model is then trained on the compressed examples. The expensive analysis happens during data preparation; the deployed model learns to produce a shorter reasoning style directly.
+
+The study trained on mathematical worked solutions and tested transfer to other math and science questions. This matters because shortening familiar examples is an easier achievement than preserving useful reasoning on a new task. The reported results show substantial savings, although individual tasks do not all have identical accuracy before and after compression.
+
+The principle is selective editing. Preserve the connections that support an answer, including those whose importance is easy to overlook.
+
+## Explore a different route
+
+Shortening a reasoning trace addresses one source of waste. Another appears when several attempts keep returning to similar solutions.
+
+Suppose a model has enough budget to try a problem several times. The benefit depends on whether those attempts expose a route that earlier ones missed. Repeatedly producing near-duplicates spends the budget without adding much coverage.
+
+[The Geometric Reasoner](/publications#publication-geometric-reasoner) explores alternatives using the model's internal numerical representations. These representations summarize aspects of the current computation. They offer places from which to steer the next stretch of generated reasoning.
+
+The method works in chunks. At a boundary, it considers candidate internal states, tests short continuations and scores their promise. Additional penalties favor smoother transitions and discourage repetitive directions. The geometry supplies a way to organize exploration; its scores are estimates of usefulness, so a promising direction can still fail.
+
+There is also a memory constraint. Keeping every detail of a long generation can become expensive. The method bounds its working text history, carrying forward the question, recent text and a compact numerical state between chunks. This makes the memory budget manageable, while creating a risk that useful details from earlier text are lost.
+
+The experiments examine how the chance of finding a correct solution changes as more attempts are allowed on math and coding tasks. That asks a more revealing question than whether one selected answer looks good: does extra search reliably open up useful possibilities?
+
+Exploration still costs time. Its value depends on how much room the underlying model has to find better routes and how well the short look-ahead predicts their eventual usefulness.
+
+## Learn from revisions before the next question arrives
+
+Even well-directed search can rediscover the same lesson. A model corrects a mistake during one interaction, but the next answer may still require a similar correction.
+
+[Lifted State Policy Optimization](/publications#publication-lspo), or LSPO, asks how training can preserve more of the benefit. It treats a local revision as something worth evaluating in its own right.
+
+A final correct answer tells us little about which preceding edits helped. Correcting a sign error and rewriting an already adequate paragraph should receive different credit. LSPO compares changes between answer states, accounting for the cost of the edits and the steps taken.
+
+An answer state includes its text and an extra learned numerical coordinate. A learned scoring function, called energy, orders the candidate states. The policy learns when to revise, switch its approach or stop. A separate training objective teaches the model to generate a selected lower-energy answer directly.
+
+This creates two jobs for training: discover useful corrections, then make their benefits available without an extra revision round at deployment.
+
+On the paper's 27-billion-parameter model, direct generation reached nearly the same aggregate accuracy as the reflection comparison while reducing response latency by about 28%. That is a result under the reported evaluation conditions, with additional training behind it. The cost has moved earlier in the system's life, which can be useful when a trained model will answer many questions.
+
+The approach also depends on the learned score tracking actual answer quality. It is designed around tasks with checkable outcomes, and its local repairs have limits when a problem needs an entirely new derivation.
+
+Across these projects, effort becomes easier to assess when we can identify what it changed: a necessary connection preserved, an alternative route explored, a correction carried into future behavior. Deciding whether an answer has truly improved remains essential. That leads back to [how a model checks its own claims](/blog/structured-reasoning-and-factual-verification).

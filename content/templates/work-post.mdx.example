@@ -1,0 +1,11 @@
+---
+title: "Your note title"
+description: "A short description of your note."
+date: 'YYYY-MM-DD'
+category: Research
+section: work
+readingTime: 3 min
+draft: true
+---
+
+Write your note here.

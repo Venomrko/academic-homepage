@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" fill="none">
+  <title>Illustrative context and expectation diagram</title>
+  <rect width="600" height="300" fill="#f6f3eb"/>
+  <g stroke="#a08c5e" opacity=".16">
+    <path d="M40 75h520M40 125h520M40 175h520M40 225h520M100 45v210M200 45v210M300 45v210M400 45v210M500 45v210"/>
+  </g>
+  <g stroke="#9d8149" stroke-width="2">
+    <path d="M109 151h58M229 151h58M349 151h58M169 133V91h148v42M317 170v45H199v-45"/>
+    <rect x="49" y="133" width="60" height="37" rx="7" fill="#fffdf8"/>
+    <rect x="169" y="133" width="60" height="37" rx="7" fill="#fffdf8"/>
+    <rect x="289" y="133" width="60" height="37" rx="7" fill="#e7cf95"/>
+    <rect x="409" y="133" width="141" height="37" rx="7" fill="#fffdf8"/>
+  </g>
+  <g fill="#715f38" font-family="Arial, sans-serif" font-size="14" text-anchor="middle">
+    <text x="79" y="157">words</text><text x="199" y="157">context</text><text x="319" y="157">meaning</text><text x="479" y="157">expectations</text>
+  </g>
+  <circle cx="169" cy="91" r="5" fill="#9d8149"/><circle cx="317" cy="215" r="5" fill="#9d8149"/>
+  <text x="40" y="34" fill="#715f38" font-family="Arial, sans-serif" font-size="11" letter-spacing="2">CONTEXT → EXPECTATION</text>
+</svg>

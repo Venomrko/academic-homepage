@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" fill="none">
+  <title>Illustrative model comparison, without empirical data</title>
+  <rect width="600" height="300" fill="#edf1f2"/>
+  <g stroke="#7892a3" opacity=".18"><path d="M45 75h510M45 125h510M45 175h510M45 225h510M100 50v200M200 50v200M300 50v200M400 50v200M500 50v200"/></g>
+  <path d="M52 226C90 223 105 113 143 94S188 193 229 204 271 77 307 79 346 185 385 176 428 69 472 86 514 197 551 158" stroke="#597c91" stroke-width="3.5"/>
+  <path d="M52 211C107 208 111 164 153 147S201 191 242 167 280 122 317 113 367 171 404 131 453 115 487 148 522 141 551 128" stroke="#96afbc" stroke-width="3.5"/>
+  <path d="M307 56v190" stroke="#7892a3" stroke-dasharray="4 5"/>
+  <circle cx="307" cy="79" r="6" fill="#597c91"/><circle cx="307" cy="113" r="5" fill="#b8cbd5" stroke="#597c91"/>
+  <text x="40" y="34" fill="#526c7b" font-family="Arial, sans-serif" font-size="11" letter-spacing="2">PREDICT · COMPARE · EXPLAIN</text>
+</svg>

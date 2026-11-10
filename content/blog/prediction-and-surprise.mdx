@@ -1,0 +1,52 @@
+---
+title: Prediction, surprise, and the next word
+description: A short working note on a simple quantity that connects language models with questions about comprehension.
+date: '2026-09-18'
+category: Language & cognition
+readingTime: 3 min
+draft: true
+---
+
+What makes a word surprising? One way to formalize the question is to ask how much probability a model assigned to that word before seeing it.
+
+## A small definition
+
+For a word assigned probability `p`, its surprisal in bits is `−log₂(p)`. A lower probability means a larger surprisal value.
+
+| Probability | Surprisal |
+| --- | --- |
+| 0.5 | 1 bit |
+| 0.25 | 2 bits |
+| 0.125 | 3 bits |
+
+The calculation is straightforward:
+
+```python title="A minimal example"
+from math import log2
+
+def surprisal(probability: float) -> float:
+    if not 0 < probability <= 1:
+        raise ValueError("Probability must be in (0, 1].")
+    return -log2(probability)
+
+print(surprisal(0.125))  # 3.0 bits
+```
+
+## A model is a perspective
+
+The number depends on the probability estimate. Different models may assign different probabilities to the same word, even when given the same preceding context.
+
+That means a model’s surprisal is a model-derived quantity. Connecting it to human comprehension requires behavioral data and a carefully specified comparison.
+
+## Questions before conclusions
+
+Before comparing model estimates with observations, it helps to ask:
+
+1. What information is available to the model and to the participant?
+2. What is the unit of analysis: a token, a word, or a sentence?
+3. How are model estimates aligned with the observations?
+4. Which alternative explanations should the analysis consider?
+
+These decisions often matter as much as the calculation itself.
+
+*This example illustrates Markdown tables and highlighted code in Fumadocs. It reports no empirical study.*

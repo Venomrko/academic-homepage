@@ -1,0 +1,65 @@
+---
+title: "Why can a convincing answer still be wrong?"
+description: "Suppose an AI invents an award in a biography. Why might asking it to check again preserve the error? The answer leads from clearer instructions to fresh factual checks—and to the limits of a model's own confidence."
+date: '2026-11-10'
+category: IJCNN · ICONIP
+section: work
+lang: en
+readingTime: 5 min
+latestConferenceDate: '2025-11-20'
+draft: false
+---
+
+Suppose a language model writes a short biography and adds an award the subject never received. The prose can still be fluent, the dates plausible and the explanation convincing. Asking the model to check again may produce a more polished version of the same error.
+
+This imagined example separates several things we often bundle together. A model has to use relevant knowledge, assess what it has written and give us some basis for judging the result. Success at one does not settle the others.
+
+Two of my early papers examine those connections. The first studies how instructions help smaller models use knowledge. The second asks how a model can check an answer without letting its first attempt dictate the check.
+
+## Give the task a clear shape
+
+Language models learn patterns from text during training. Whether a particular task draws on useful learned patterns also depends on how the task is presented.
+
+“Think step by step” asks for a sequence of reasoning, but leaves much unspecified. Which information matters? What is the purpose of the task? What would count as a satisfactory answer?
+
+[Heuristic Chain of Thought](/publications#publication-heuristic-cot) explored a different cue: “Let's use knowledge.” We paired it with SPIRE, an instruction format that makes the task's purpose, available information, intended perspective and required expression more explicit.
+
+For a passage-based question, for example, the goal may be to identify the relevant answer in the text. A broad explanation of the topic could be informative and still miss that goal. Making the expected task and response clear helps direct the model's work.
+
+The study combined instruction design with a small amount of instruction tuning: additional training on examples of how to follow a task. The measured improvements belong to that combination. One experiment used a BERT model with about 42 million learned settings, known as parameters, to select answers from passages.
+
+That is a much narrower task than an open conversation with a large chatbot. Its value is that it gives us a concrete setting in which to ask whether a model is failing to use the capacity it already has. Question-answering and translation experiments let us compare instruction formats rather than infer capability from a single impressive response.
+
+Clearer instructions helped on the evaluated tasks. They also left the next problem exposed. A model can understand the assignment and still include something false.
+
+## Give the check a fresh starting point
+
+Return to the imaginary biography. If the model's review begins by accepting the invented award as part of the story, later reasoning may explain or elaborate it. The supposed check has inherited the claim it needed to question.
+
+[FactPrompt](/publications#publication-factprompt) changes the information available to the checking process. It first produces a draft answer. A separate prompt then asks for relevant factual claims using the original question alone, without showing that draft. Another stage compares the claims with the answer and revises it.
+
+The distinction is small to describe but important to the procedure. A request to justify a draft can keep the model close to its initial assumptions. Starting again from the question gives the factual claims a chance to develop along a different path.
+
+In the biography example, the model would separately produce claims relevant to the original request, then compare them with its draft. A missing or contradictory claim would warrant scrutiny; an omission alone would not prove that the award was invented.
+
+The new claims still come from the same model. Separating the prompts reduces one route by which a mistake can propagate, while leaving shared gaps in the model's knowledge unresolved. If the same false association appears in both stages, the procedure can preserve it.
+
+The paper evaluates this arrangement across ten datasets, including open-ended questions and longer generated answers, and compares separated verification with a combined version. Those comparisons help test whether the separation contributes something beyond asking for more text.
+
+The broader lesson concerns the design of a check. Its usefulness depends partly on whether it has enough distance from the answer it is supposed to assess.
+
+## Treat confidence as a clue
+
+There is a further difficulty: evaluating an answer when we do not already possess a reference answer. That is often the situation in which someone asks an AI for help.
+
+The FactPrompt paper also introduces a reliability measure called R&T. It uses the model's predictions to examine how unexpected successive parts of a response are. Unusually surprising text receives a larger penalty, and response length also enters the calculation.
+
+The idea draws on a hypothesis about how information is distributed through language. Abrupt changes in predictability may be useful warning signs. The experiments examine how the resulting score relates to conventional measures of answer quality.
+
+This is an indirect signal. A correct but unfamiliar name can be surprising to a model. A familiar false statement can be easy for it to predict. Even a strong relationship between a score and accuracy across an evaluation cannot certify every individual claim.
+
+That distinction matters for the biography. A smooth, predictable account of an invented award may still pass a confidence-based test. The score can support an assessment alongside other evidence; it cannot supply a missing award record.
+
+The two papers therefore open several practical questions. How much of a weak answer comes from an unclear task? How much comes from a check that repeats the draft's assumptions? Which warning signs help us decide when outside evidence is needed?
+
+I find that last question especially useful because it makes the limits visible. A system becomes easier to study when we can distinguish how it was instructed, how its answer was checked and what evidence supports our trust. [Whether useful corrections can become lasting lessons](/blog/cognitive-reasoning-and-cumulative-intelligence) is the next part of the story.

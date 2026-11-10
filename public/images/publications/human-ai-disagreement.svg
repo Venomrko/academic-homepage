@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" fill="none">
+  <title>Illustrative human and AI conversation</title>
+  <rect width="600" height="300" fill="#eef1e8"/>
+  <g stroke="#84946d" opacity=".16"><path d="M45 75h510M45 125h510M45 175h510M45 225h510M100 50v200M200 50v200M300 50v200M400 50v200M500 50v200"/></g>
+  <g stroke="#77865f" stroke-width="1.8">
+    <path d="M100 68h265a13 13 0 0 1 13 13v45a13 13 0 0 1-13 13H120l-20 17v-17a13 13 0 0 1-13-13V81a13 13 0 0 1 13-13Z" fill="#fbfcf8"/>
+    <path d="M249 168h259a13 13 0 0 1 13 13v45a13 13 0 0 1-13 13v17l-20-17H249a13 13 0 0 1-13-13v-45a13 13 0 0 1 13-13Z" fill="#d6dfc3"/>
+    <path d="M116 94h150m-150 19h222M265 195h136m-136 19h214"/>
+    <circle cx="438" cy="103" r="21" fill="#fbfcf8"/><path d="M429 103h18m-9-9v18"/>
+    <circle cx="165" cy="204" r="21" fill="#fbfcf8"/><path d="M156 204h18"/>
+  </g>
+  <text x="40" y="34" fill="#5f6d4d" font-family="Arial, sans-serif" font-size="11" letter-spacing="2">HUMAN ↔ MACHINE</text>
+</svg>

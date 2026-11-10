@@ -1,0 +1,39 @@
+---
+title: Start with a small, reproducible experiment
+description: Why a clear question and a modest first analysis often make a better starting point.
+date: '2026-08-02'
+category: Methods & tools
+readingTime: 2 min
+draft: true
+---
+
+The first version of an experiment does not need to answer every question. It needs to make the assumptions concrete enough to test.
+
+## Make the question specific
+
+Replace a broad aim with something you can inspect. Instead of “compare language models,” begin with a particular set of materials and a clearly defined outcome.
+
+Write down what would count as an informative result before looking at the data.
+
+## Keep the path visible
+
+A useful research folder makes the route from input to output easy to follow:
+
+```text title="A simple project structure"
+experiment/
+  README.md
+  data/
+  analysis/
+  figures/
+  environment.yml
+```
+
+The README should explain where the inputs come from, how to run the analysis, and what each output represents. Record software versions and random seeds where they affect the result.
+
+## Inspect before scaling
+
+Look closely at a few examples. Check unexpected outputs. Confirm that labels, measurements, and assumptions mean what you think they mean.
+
+A small analysis gives you a chance to discover a mismatch before it becomes a large one.
+
+*This is an illustrative methods note for the site prototype.*

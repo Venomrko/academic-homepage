@@ -1,0 +1,65 @@
+---
+title: "How does a good answer become a lasting lesson?"
+description: "A model can correct an answer without learning a lasting lesson. From a six-meal puzzle to a shared library of checked solutions, these projects ask how useful reasoning can be understood, supported and passed on."
+date: '2026-11-10'
+category: SMC · CogSci
+section: work
+lang: en
+readingTime: 5 min
+latestConferenceDate: '2026-07-22'
+draft: false
+---
+
+Six crew members are sharing six meals: three fish dinners and three steak dinners. The meals are assigned at random. What is the chance that both pilots receive fish?
+
+This problem appears in a worked example in my Twin Prompt paper. The model gives an incorrect first solution, then arrives at the correct answer during revision. The example is small enough to follow, but it raises a larger question. How can an AI organize a useful second thought, and how can what it learns survive beyond the answer in front of it?
+
+My work approaches that question through the structure of a response, the material available to support it, and the way useful results pass between models.
+
+## Make the question easier to see
+
+The meal problem can tempt a solver into counting arrangements that do not match the event being asked about. A clearer formulation keeps the six meals, the two pilots and the random assignment in view.
+
+Once the setup is clear, the calculation is short. The first pilot has a three-in-six chance of receiving fish. If that happens, two fish meals remain among five meals. Multiplying those chances gives one in five.
+
+[Twin Prompt](/publications#publication-twin-prompt) gives a model a structure for making that kind of clarification and revision within one response. It first asks for a reformulation of the problem, then an initial solution, then a refined answer. The reformulated question is the “twin problem”; the revised solution is the “twin answer.”
+
+The aim is to make the model work on its interpretation as well as its calculation. A useful restatement preserves the problem's constraints and makes the required result more explicit. A useful revision checks whether the initial reasoning actually meets them.
+
+In the meal example, the model's first calculation uses a flawed counting argument. Its final answer repairs the count. The example shows what the structure can make possible; the evidence for broader usefulness comes from evaluations on mathematical and general reasoning tasks across several models.
+
+We also tested the contributions of question reformulation and answer refinement separately. Their combination matters because a correct calculation applied to a misread question can still produce the wrong answer.
+
+All stages fit inside one end-to-end interaction. That simplifies the exchange, though generating and revising an explanation still takes computation. The cognitive inspiration concerns how the task is arranged; it does not establish that the model uses the same mental processes as a person.
+
+## Give reasoning something to work with
+
+A clearly understood question may still require information the model cannot reliably supply from memory. This became a practical concern in my master's thesis on a [climate-change dialogue system](/projects/climate-change-dialogue-system).
+
+For a domain question, a general explanation can sound relevant while missing the particular evidence needed. The system has to find suitable material before it can make good use of it.
+
+I trained two components for this purpose. C²Embedding helps retrieve candidate passages by representing questions and documents numerically. C²Reranker then compares the candidates more closely and changes their order so that more relevant material can reach the answering stage.
+
+Twin Prompt provides a structure for understanding the question and refining the response that uses this material. Retrieval and reasoning have different responsibilities: finding the right passage does not guarantee a sound inference, and careful reasoning cannot compensate for every gap in the evidence supplied.
+
+The system therefore brought an abstract prompting idea into a setting with concrete dependencies. A weak answer might begin with a misunderstood question, an unsuitable document or an inference that the document does not support. Separating those stages makes it easier to investigate where an answer went wrong.
+
+That is also why the project involves more than attaching a prompt to a language model. The quality of the answer depends on the route by which information reaches it.
+
+## Make useful knowledge survive
+
+A repaired answer is valuable, but a correction in the current response does not by itself update the model's learned behavior. The next problem may require the same lesson again.
+
+[The Ratchet Effect in Silico](/publications#publication-ratchet-effect) studies a way to make improvements accumulate. Its framework, POLIS, lets relatively small models propose solutions, check one another's work and retain selected results in shared memory.
+
+The ratchet in the title is a useful image: an advance should be held in place so that later work can build on it. For an AI system, this requires decisions about what deserves to be preserved.
+
+In POLIS, candidates face a strict peer check before entering the retained collection. Solutions that pass are ranked for quality. The models periodically train on the selected material, allowing useful patterns to enter their learned behavior. The difficulty of new challenges adapts, with held-out checks helping constrain drift.
+
+This is a more demanding process than storing every answer. Errors can accumulate too. A shared collection needs a way to reject them before they become examples for later learning.
+
+To examine what was doing the work, we removed parts of the system one at a time. In the reported component comparison, removing peer verification produced the largest drop in average accuracy, from 54.8% to 37.8%. Memory and learning from retained solutions also contributed. The result gives a concrete reason to care about how a group checks its work.
+
+Agreement can still preserve a shared mistake. The experiments use a controlled set of reasoning tasks; they do not establish that the same process will sustain improvement indefinitely or handle every kind of open-ended judgment. The comparison with human culture offers a research model whose parts can be tested separately.
+
+The meal puzzle begins with one mistaken answer and one successful repair. These projects carry that question further: how to make an answer easier to examine, give it better support and preserve what survives scrutiny. The next challenge is [how much effort that process needs to keep spending](/blog/efficient-inference-and-geometric-reasoning).
