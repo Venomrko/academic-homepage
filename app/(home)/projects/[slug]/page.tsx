@@ -47,7 +47,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         <div><dt>Location</dt><dd>{project.location}</dd></div>
       </dl>
     </header>
-    {!project.sections && <ProjectVisual variant={project.visual} />}
+    <ProjectVisual variant={project.visual} />
     <div className="project-detail-body">
       <section aria-labelledby="project-overview">
         <h2 id="project-overview">Overview</h2>
