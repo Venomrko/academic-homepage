@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import type { ProjectFigure } from '@/lib/site-data';
+import type { ProjectFigure } from '@/lib/data/projects';
 
 export function ProjectStudyFigure({ figure }: { figure: ProjectFigure }) {
   return <figure className="project-study-figure">

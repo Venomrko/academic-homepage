@@ -1,5 +1,5 @@
 import { ArrowUpRight } from 'lucide-react';
-import { profile } from '@/lib/site-data';
+import { profile } from '@/lib/data/profile';
 
 export function SiteFooter() {
   return <footer className="site-footer site-container" id="contact">

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ArrowDown, ArrowUp } from 'lucide-react';
-import type { Honor } from '@/lib/site-data';
+import type { Honor } from '@/lib/data/honors';
 
 const pageSize = 6;
 

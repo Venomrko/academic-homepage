@@ -2,7 +2,10 @@ import { Fragment } from 'react';
 import { GraduationCap, Library, Mail, MapPin } from 'lucide-react';
 import { PageHeading } from '@/components/section-heading';
 import { CVActions } from '@/components/cv-actions';
-import { cvData, honors, profile, publications } from '@/lib/site-data';
+import { cvData } from '@/lib/data/cv';
+import { honors } from '@/lib/data/honors';
+import { profile } from '@/lib/data/profile';
+import { publications } from '@/lib/data/publications';
 import { pageMetadata } from '@/lib/site-metadata';
 
 export const metadata = pageMetadata({

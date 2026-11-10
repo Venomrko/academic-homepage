@@ -805,7 +805,7 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
   .life-journal .resource-card-copy { min-height: 0; padding: 0; }
   .life-journal-art { min-height: 0; }
   .life-journal-illustration { max-width: 240px; }
-  .research-story .concept-stamp-art { padding: 0 24px 16px; justify-content: flex-start; }
+  .resource-card-head-row .resource-card-art-header { min-height: 0; padding: 0; }
   .article-heading-wrapper { flex-direction: column-reverse; gap: 16px; }
 }
 

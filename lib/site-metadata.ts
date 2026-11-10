@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { profile } from '@/lib/site-data';
+import { profile } from '@/lib/data/profile';
 
 export const siteUrl = 'https://academic.solitudinis.cc';
 export const siteTitle = "Ren's Homepage";
@@ -13,6 +13,7 @@ type PageMetadataOptions = {
   imagePath?: string | null;
   type?: 'website' | 'article';
   publishedTime?: string;
+  modifiedTime?: string;
 };
 
 /** Keep each page's canonical and social identity together. */
@@ -23,6 +24,7 @@ export function pageMetadata({
   imagePath = '/opengraph-image',
   type = 'website',
   publishedTime,
+  modifiedTime,
 }: PageMetadataOptions): Metadata {
   const url = new URL(path, siteUrl).href;
   const fullTitle = path === '/' ? siteTitle : `${title} | ${profile.name}`;
@@ -48,6 +50,7 @@ export function pageMetadata({
       ...(type === 'article' && {
         authors: [profile.name],
         ...(publishedTime && { publishedTime }),
+        ...(modifiedTime && { modifiedTime }),
       }),
     },
     twitter: {

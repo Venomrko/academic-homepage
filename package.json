@@ -9,7 +9,9 @@
     "build": "node scripts/next.mjs build",
     "dev": "node scripts/next.mjs dev --hostname 127.0.0.1",
     "start": "node scripts/next.mjs start --hostname 127.0.0.1",
-    "types:check": "next typegen && tsc --noEmit"
+    "types:check": "next typegen && tsc --noEmit",
+    "test:e2e": "playwright test",
+    "test:report": "playwright show-report"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",
@@ -26,6 +28,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/mdx": "^2.0.14",
     "@types/node": "^26.6.4",

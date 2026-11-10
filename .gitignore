@@ -5,3 +5,5 @@ node_modules/
 .logs/
 .env*
 *.tsbuildinfo
+playwright-report/
+test-results/

@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState, type ComponentProps, type CSSProperties } from 'react';
 import { Star } from 'lucide-react';
-import { profile } from '@/lib/site-data';
+import { profile } from '@/lib/data/profile';
 
 const celebrationDuration = 3600;
 const sparkles = [

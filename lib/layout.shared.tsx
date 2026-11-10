@@ -1,7 +1,7 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { HeaderTools } from '@/components/header-tools';
 import { SiteBrand } from '@/components/site-brand';
-import { profile } from './site-data';
+import { profile } from '@/lib/data/profile';
 
 export function baseOptions(): BaseLayoutProps {
   return {

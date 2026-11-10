@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { projects } from '@/lib/site-data';
+import { projects } from '@/lib/data/projects';
 import { socialImage } from '@/lib/social-image';
 
 export const alt = 'Selected projects by Ren Zhuang';

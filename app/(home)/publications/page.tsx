@@ -1,6 +1,6 @@
 import { PageHeading } from '@/components/section-heading';
 import { PublicationExplorer } from '@/components/publication-explorer';
-import { profile } from '@/lib/site-data';
+import { profile } from '@/lib/data/profile';
 import { pageMetadata } from '@/lib/site-metadata';
 
 export const metadata = pageMetadata({

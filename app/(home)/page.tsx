@@ -1,5 +1,6 @@
 import { MapPin } from 'lucide-react';
-import { honors, profile } from '@/lib/site-data';
+import { honors } from '@/lib/data/honors';
+import { profile } from '@/lib/data/profile';
 import { SolarArtwork } from '@/components/solar-artwork';
 import { ResearchShowcase } from '@/components/research-showcase';
 import { NewsUpdates } from '@/components/news-updates';

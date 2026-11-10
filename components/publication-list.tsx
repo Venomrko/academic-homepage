@@ -3,7 +3,8 @@
 import { Fragment, useState } from 'react';
 import Image from 'next/image';
 import { Check, Copy } from 'lucide-react';
-import { profile, publications, type Publication } from '@/lib/site-data';
+import { profile } from '@/lib/data/profile';
+import { publications, type Publication } from '@/lib/data/publications';
 
 const externalActions = [
   { key: 'arxiv', label: 'ARXIV' },

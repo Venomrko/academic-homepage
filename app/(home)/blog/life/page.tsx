@@ -6,7 +6,7 @@ import { ConceptStamp } from '@/components/concept-stamp';
 import { BlogEmptyState } from '@/components/blog-empty-state';
 import { blog } from '@/lib/source';
 import { formatDate } from '@/lib/format';
-import { profile } from '@/lib/site-data';
+import { profile } from '@/lib/data/profile';
 import { pageMetadata } from '@/lib/site-metadata';
 
 export const metadata = pageMetadata({

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { ArrowDown, ArrowUp } from 'lucide-react';
-import { servicesAndTravel, type ServiceTravelEntry } from '@/lib/site-data';
+import { servicesAndTravel, type ServiceTravelEntry } from '@/lib/data/services';
 
 type ListLayout = {
   fullHeight: number;

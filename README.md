@@ -57,15 +57,21 @@ Most site content is kept in a small number of predictable locations:
 
 | Path | Purpose |
 | --- | --- |
-| `lib/site-data.ts` | Profile, research, news, honors, publications, projects, and services |
-| `lib/site-metadata.ts` | Site metadata, canonical URL, and external profile links |
+| `lib/data/` | Profile, research, news, honors, publications, projects, CV, and services |
+| `lib/site-metadata.ts` | Site title, canonical URL, and social metadata |
 | `content/blog/*.mdx` | Blog and personal writing |
 | `components/` | Reusable page sections and interactive components |
 | `app/` | Routes, layouts, metadata, and global styles |
 | `public/images/` | Publication and project artwork |
 | `public/fonts/` | Local font files |
+| `components/project-visuals/`, `components/stamps/` | Individual SVG illustrations and blog motifs |
+| `tests/browser/` | Viewport, theme, layout, and interaction regression checks |
 
-To adapt the site for another profile, start with `lib/site-data.ts`, `lib/site-metadata.ts`, and the MDX files in `content/blog/`. The page structure and visual system can then be adjusted in `components/` and `app/global.css`.
+To adapt the site for another profile, start with `lib/data/profile.ts`,
+the other files in `lib/data/`, `lib/site-metadata.ts`, and the MDX files in
+`content/blog/`. The page structure and visual system can then be adjusted in
+`components/` and `app/global.css`. `lib/site-data.ts` retains compatibility
+exports; components import only the data module they need.
 
 New blog entries can be added as `.mdx` files with frontmatter such as:
 
@@ -76,11 +82,24 @@ description: A short description for cards and search results.
 date: '2026-10-05'
 category: Research
 section: work
+readingTime: 4 min
 draft: true
 ---
 ```
 
 Set `draft: false` or remove the field when an article is ready to publish.
+For later substantive revisions, add `updated: 'YYYY-MM-DD'` while retaining
+the original `date`. The sitemap and article metadata use this revision date.
+Project records have their own `updated` field. Other page-content dates are
+maintained in `lib/data/content-updates.ts`; these are not deployment dates.
+
+## Validation
+
+GitHub Actions checks types, builds the production site, and runs the browser
+regression suite on every push and pull request. The suite covers 390px, 768px,
+and 1440px viewports in light, dark, and system themes, with full-page screenshots
+attached to its HTML report. See [docs/testing.md](docs/testing.md) for local
+commands and review instructions.
 
 ## Deployment
 

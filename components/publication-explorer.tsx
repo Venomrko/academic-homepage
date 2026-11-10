@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Search, X } from 'lucide-react';
-import { publications, type Publication } from '@/lib/site-data';
+import { publications, type Publication } from '@/lib/data/publications';
 import { PublicationList } from '@/components/publication-list';
 import { ServicesTravel } from '@/components/services-travel';
 

@@ -3,7 +3,7 @@ import { RootProvider } from 'fumadocs-ui/provider/next';
 import './global.css';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { profile } from '@/lib/site-data';
+import { profile } from '@/lib/data/profile';
 import { siteDescription, siteTitle, siteUrl } from '@/lib/site-metadata';
 
 const anthropicSans = localFont({

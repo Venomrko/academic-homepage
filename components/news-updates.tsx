@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { ArrowDown, ArrowUp, Search, X } from 'lucide-react';
-import { news } from '@/lib/site-data';
+import { news } from '@/lib/data/news';
 import { formatDate } from '@/lib/format';
 
 const pageSize = 10;

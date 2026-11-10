@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { Pause, Play } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import type { ProjectIllustration } from '@/lib/site-data';
+import type { ProjectIllustration } from '@/lib/data/projects';
 
 function LoopIllustration({ illustration, label }: { illustration: ProjectIllustration; label: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);

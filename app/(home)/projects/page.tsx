@@ -1,7 +1,8 @@
 import { PageHeading } from '@/components/section-heading';
 import { ProjectVisual } from '@/components/project-visual';
 import { ResourceCard } from '@/components/resource-card';
-import { profile, projects } from '@/lib/site-data';
+import { profile } from '@/lib/data/profile';
+import { projects } from '@/lib/data/projects';
 import { pageMetadata } from '@/lib/site-metadata';
 
 export const metadata = pageMetadata({

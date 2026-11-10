@@ -8,6 +8,8 @@ const articles = defineCollections({
   dir: 'content/blog',
   schema: pageSchema.extend({
     date: z.string(),
+    // Set only after a substantive revision; the publication date stays intact.
+    updated: z.iso.date().optional(),
     category: z.string(),
     section: z.enum(['life', 'work']).default('work'),
     readingTime: z.string(),

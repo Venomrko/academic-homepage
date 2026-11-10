@@ -1,4 +1,4 @@
-import { researchAreas } from '@/lib/site-data';
+import { researchAreas } from '@/lib/data/profile';
 
 export function ResearchShowcase() {
   return (

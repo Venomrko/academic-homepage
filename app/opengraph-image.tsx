@@ -1,4 +1,4 @@
-import { profile } from '@/lib/site-data';
+import { profile } from '@/lib/data/profile';
 import { socialImage } from '@/lib/social-image';
 
 export const alt = `${profile.name} — Research & Writing`;

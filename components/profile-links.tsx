@@ -1,6 +1,6 @@
 import { GraduationCap, Library, Mail } from 'lucide-react';
 import { resolveLinkItems } from 'fumadocs-ui/layouts/shared';
-import { profile } from '@/lib/site-data';
+import { profile } from '@/lib/data/profile';
 
 function OrcidIcon() {
   return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

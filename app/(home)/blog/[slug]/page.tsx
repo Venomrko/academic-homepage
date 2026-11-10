@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { InlineTOC } from 'fumadocs-ui/components/inline-toc';
 import { ConceptStamp } from '@/components/concept-stamp';
 import { blog } from '@/lib/source';
-import { profile } from '@/lib/site-data';
+import { profile } from '@/lib/data/profile';
 import { formatDate } from '@/lib/format';
 import { getMDXComponents } from '@/components/mdx';
 import { pageMetadata } from '@/lib/site-metadata';
@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description: page.data.description,
     type: 'article',
     publishedTime: page.data.date,
+    modifiedTime: page.data.updated ?? page.data.date,
     imagePath: null,
   });
 }
