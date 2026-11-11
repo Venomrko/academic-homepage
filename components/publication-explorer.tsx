@@ -23,15 +23,16 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
   const [resultSequence, setResultSequence] = useState(0);
   const searchRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
-  const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  const matches = publications.filter((paper) => {
+  function matchesSearch(paper: Publication, value: string) {
+    const searchTerms = value.trim().toLowerCase().split(/\s+/).filter(Boolean);
     if (selectedYear !== null && paper.year !== selectedYear) return false;
     if (selectedVenue !== null && venueLabel(paper) !== selectedVenue) return false;
-    if (terms.length === 0) return true;
+    if (searchTerms.length === 0) return true;
     const searchable = [paper.title, paper.authors, paper.year, paper.venue, paper.venueShort,
       paper.abstract, ...(paper.distinctions?.map(({ label }) => label) ?? [])].join(' ').toLowerCase();
-    return terms.every((term) => searchable.includes(term));
-  });
+    return searchTerms.every((term) => searchable.includes(term));
+  }
+  const matches = publications.filter((paper) => matchesSearch(paper, query));
   const activeFilters = [selectedYear, selectedVenue].filter((value) => value !== null);
 
   function animateResults() {
@@ -65,8 +66,9 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
               placeholder="Search"
               value={query}
               onChange={(event) => {
-                setQuery(event.target.value);
-                animateResults();
+                const nextValue = event.target.value;
+                setQuery(nextValue);
+                if (publications.some((paper) => matchesSearch(paper, nextValue))) animateResults();
               }}
               onKeyDown={(event) => {
                 if (event.key === 'Escape') {

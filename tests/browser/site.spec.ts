@@ -113,7 +113,8 @@ test('publication panels stay open during a matching search', async ({ page }, t
   await expect(paper.locator('.publication-panel[data-open="true"]')).toHaveCount(2);
   const visibleServices = page.locator('.services-travel-entry[aria-hidden="false"]');
   const initialServiceCount = await visibleServices.count();
-  await page.getByRole('searchbox', { name: 'Search publications by title, author, year, venue, or keyword' }).fill('Lifted State');
+  const publicationSearch = page.getByRole('searchbox', { name: 'Search publications by title, author, year, venue, or keyword' });
+  await publicationSearch.fill('Lifted State');
   await expect(page.locator('.publication-entry')).toHaveCount(1);
   await expect(page.locator('.publication-result-list')).toHaveAttribute('data-result-sequence', '1');
   const resultAnimation = await page.locator('.publication-entry').first().evaluate((node) => getComputedStyle(node).animationName);
