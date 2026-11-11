@@ -410,6 +410,7 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 @keyframes news-filter-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
 @keyframes stream-item-in { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
 .publication-explorer .publication-year { grid-template-columns: 58px minmax(0, 1fr); gap: 20px; padding-top: var(--publication-row-padding); }
+.publication-explorer .publication-year[data-visible="false"] { padding-top: 0; }
 .publication-explorer .publication-entry-body.with-image { grid-template-columns: minmax(0, 1fr) 260px; gap: 24px; }
 .publication-explorer .publication-image { max-width: 260px; }
 .publication-empty { min-height: 250px; padding-block: 32px; border-block: 1px solid var(--line); font-family: var(--font-serif); font-size: 16px; line-height: 1.6; color: var(--muted); }
