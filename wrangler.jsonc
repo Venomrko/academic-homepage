@@ -12,7 +12,8 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "academic-homepage"
+      "service": "academic-homepage",
+      "environment": "production"
     }
   ],
   "r2_buckets": [
@@ -26,8 +27,11 @@
   },
   "observability": {
     "enabled": true,
+    "issues": {
+      "enabled": true
+    },
     "traces": {
-      "enabled": false
+      "enabled": true
     }
   },
   "previews": {
@@ -42,7 +46,13 @@
       "binding": "IMAGES"
     },
     "observability": {
-      "enabled": true
+      "enabled": true,
+      "issues": {
+        "enabled": true
+      },
+      "traces": {
+        "enabled": true
+      }
     }
   }
 }
