@@ -103,6 +103,7 @@ test('news expands and collapses, and system theme follows the browser', async (
 });
 
 test('publication panels stay open during a matching search', async ({ page }, testInfo) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
   await visit(page, '/publications');
   const paper = page.locator('#publication-lspo');
   const abstract = paper.getByRole('button', { name: 'ABS', exact: true });
@@ -115,6 +116,8 @@ test('publication panels stay open during a matching search', async ({ page }, t
   await page.getByRole('searchbox', { name: 'Search publications by title, author, year, venue, or keyword' }).fill('Lifted State');
   await expect(page.locator('.publication-entry')).toHaveCount(1);
   await expect(page.locator('.publication-result-list')).toHaveAttribute('data-result-sequence', '1');
+  const resultAnimation = await page.locator('.publication-result-list').evaluate((node) => getComputedStyle(node).animationName);
+  expect(['publication-results-enter-a', 'publication-results-enter-b']).toContain(resultAnimation);
   await expect(visibleServices).toHaveCount(initialServiceCount);
   await expect(abstract).toHaveAttribute('aria-expanded', 'true');
   await expect(citation).toHaveAttribute('aria-expanded', 'true');

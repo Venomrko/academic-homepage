@@ -401,9 +401,12 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .services-travel-toggle { display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; min-height: var(--services-controls-height); margin-top: var(--services-controls-gap); padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; background: color-mix(in srgb, var(--soft-surface) 45%, transparent); color: var(--muted); font-family: var(--font-sans); font-size: 12px; transition: color .18s, background .18s; }
 .services-travel-toggle:hover { color: var(--research-ink); background: var(--soft-surface); }
 .publication-results { grid-column: 2; grid-row: 2; min-width: 0; }
-.publication-result-list[data-result-sequence] { animation: publication-results-enter .36s cubic-bezier(.22, 1, .36, 1) both; }
+.publication-result-list[data-result-sequence] { animation-duration: .36s; animation-timing-function: cubic-bezier(.22, 1, .36, 1); animation-fill-mode: both; }
+.publication-result-list[data-result-parity="0"] { animation-name: publication-results-enter-a; }
+.publication-result-list[data-result-parity="1"] { animation-name: publication-results-enter-b; }
 @keyframes publication-filter-enter { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-@keyframes publication-results-enter { from { opacity: .35; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+@keyframes publication-results-enter-a { from { opacity: .35; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+@keyframes publication-results-enter-b { from { opacity: .35; transform: translateY(7px); } to { opacity: 1; transform: none; } }
 @keyframes news-filter-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
 @keyframes stream-item-in { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
 .publication-explorer .publication-year { grid-template-columns: 58px minmax(0, 1fr); gap: 20px; padding-top: var(--publication-row-padding); }

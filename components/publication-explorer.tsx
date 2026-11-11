@@ -124,7 +124,11 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
 
         <div className="publication-results" id="publication-results" ref={resultsRef}>
           <p className="sr-only" role="status" aria-live="polite">{matches.length} {matches.length === 1 ? 'publication' : 'publications'} shown.</p>
-          <div className="publication-result-list" data-result-sequence={resultSequence || undefined}>
+          <div
+            className="publication-result-list"
+            data-result-sequence={resultSequence || undefined}
+            data-result-parity={resultSequence ? resultSequence % 2 : undefined}
+          >
             {matches.length > 0 ? <PublicationList entries={matches} /> : <div className="publication-empty">
               <p>No publications found.</p>
               <p>Try another keyword, year, or venue.</p>
