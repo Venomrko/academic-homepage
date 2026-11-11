@@ -103,7 +103,6 @@ test('news expands and collapses, and system theme follows the browser', async (
 });
 
 test('publication panels stay open during a matching search', async ({ page }, testInfo) => {
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
   await visit(page, '/publications');
   const paper = page.locator('#publication-lspo');
   const abstract = paper.getByRole('button', { name: 'ABS', exact: true });
@@ -116,13 +115,7 @@ test('publication panels stay open during a matching search', async ({ page }, t
   const publicationSearch = page.getByRole('searchbox', { name: 'Search publications by title, author, year, venue, or keyword' });
   await publicationSearch.fill('Lifted State');
   await expect(page.locator('.publication-entry')).toHaveCount(1);
-  await expect(page.locator('.publication-result-list')).toHaveAttribute('data-result-sequence', '1');
-  const resultAnimation = await page.locator('.publication-entry').first().evaluate((node) => getComputedStyle(node).animationName);
-  expect(['publication-results-stream-a', 'publication-results-stream-b']).toContain(resultAnimation);
   await expect(visibleServices).toHaveCount(initialServiceCount);
-  await publicationSearch.fill('Lifted State ');
-  await page.waitForTimeout(240);
-  await expect(page.locator('.publication-result-list')).toHaveAttribute('data-result-sequence', '1');
   await expect(abstract).toHaveAttribute('aria-expanded', 'true');
   await expect(citation).toHaveAttribute('aria-expanded', 'true');
   // Expanded content spans the whole middle list, including its image column.

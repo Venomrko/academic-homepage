@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { Search, X } from 'lucide-react';
 import { publications, type Publication } from '@/lib/data/publications';
 import { PublicationList } from '@/components/publication-list';
@@ -20,10 +20,8 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
   const [query, setQuery] = useState('');
-  const [resultSequence, setResultSequence] = useState(0);
   const searchRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
-  const animationTimerRef = useRef<number | null>(null);
   function matchesSearch(paper: Publication, value: string) {
     const searchTerms = value.trim().toLowerCase().split(/\s+/).filter(Boolean);
     if (selectedYear !== null && paper.year !== selectedYear) return false;
@@ -36,46 +34,15 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
   const matches = publications.filter((paper) => matchesSearch(paper, query));
   const activeFilters = [selectedYear, selectedVenue].filter((value) => value !== null);
 
-  function animateResults() {
-    if (animationTimerRef.current !== null) {
-      window.clearTimeout(animationTimerRef.current);
-      animationTimerRef.current = null;
-    }
-    setResultSequence((sequence) => sequence + 1);
-  }
-
-  function scheduleResultsAnimation(hasMatches: boolean) {
-    if (animationTimerRef.current !== null) {
-      window.clearTimeout(animationTimerRef.current);
-      animationTimerRef.current = null;
-    }
-    if (!hasMatches) return;
-    animationTimerRef.current = window.setTimeout(() => {
-      animationTimerRef.current = null;
-      setResultSequence((sequence) => sequence + 1);
-    }, 500);
-  }
-
-  function hasPublicationSetChanged(nextMatches: readonly Publication[]) {
-    if (nextMatches.length !== matches.length) return true;
-    return nextMatches.some((paper, index) => paper.id !== matches[index]?.id);
-  }
-
-  useEffect(() => () => {
-    if (animationTimerRef.current !== null) window.clearTimeout(animationTimerRef.current);
-  }, []);
-
   function clearFilters() {
     setSelectedYear(null);
     setSelectedVenue(null);
-    animateResults();
   }
 
   function resetSearchAndFilters() {
     setQuery('');
     setSelectedYear(null);
     setSelectedVenue(null);
-    animateResults();
   }
 
   return (
@@ -91,23 +58,14 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
               aria-label="Search publications by title, author, year, venue, or keyword"
               placeholder="Search"
               value={query}
-              onChange={(event) => {
-                const nextValue = event.target.value;
-                const nextMatches = publications.filter((paper) => matchesSearch(paper, nextValue));
-                setQuery(nextValue);
-                scheduleResultsAnimation(nextMatches.length > 0 && hasPublicationSetChanged(nextMatches));
-              }}
+              onChange={(event) => setQuery(event.target.value)}
               onKeyDown={(event) => {
-                if (event.key === 'Escape') {
-                  setQuery('');
-                  animateResults();
-                }
+                if (event.key === 'Escape') setQuery('');
               }}
               aria-controls="publication-results"
             />
             {query && <button type="button" aria-label="Clear publication search" onClick={() => {
               setQuery('');
-              animateResults();
               searchRef.current?.focus();
             }}><X size={15} aria-hidden="true" /></button>}
           </div>
@@ -126,20 +84,16 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
                 {mode === 'year' ? <>
                   <button type="button" aria-pressed={selectedYear === null} aria-controls="publication-results" onClick={() => {
                     setSelectedYear(null);
-                    animateResults();
                   }}>All years</button>
                   {years.map((year) => <button key={year} type="button" aria-pressed={selectedYear === year} aria-controls="publication-results" onClick={() => {
                     setSelectedYear((current) => current === year ? null : year);
-                    animateResults();
                   }}>{year}</button>)}
                 </> : <>
                   <button type="button" aria-pressed={selectedVenue === null} aria-controls="publication-results" onClick={() => {
                     setSelectedVenue(null);
-                    animateResults();
                   }}>All venues</button>
                   {venues.map((venue) => <button key={venue} type="button" aria-pressed={selectedVenue === venue} aria-controls="publication-results" onClick={() => {
                     setSelectedVenue((current) => current === venue ? null : venue);
-                    animateResults();
                   }}>{venue}</button>)}
                 </>}
               </div>
@@ -153,12 +107,8 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
 
         <div className="publication-results" id="publication-results" ref={resultsRef}>
           <p className="sr-only" role="status" aria-live="polite">{matches.length} {matches.length === 1 ? 'publication' : 'publications'} shown.</p>
-          <div
-            className="publication-result-list"
-            data-result-sequence={resultSequence || undefined}
-            data-result-parity={resultSequence ? resultSequence % 2 : undefined}
-          >
-            {matches.length > 0 ? <PublicationList entries={matches} animationSequence={resultSequence} /> : <div className="publication-empty">
+          <div className="publication-result-list">
+            {matches.length > 0 ? <PublicationList entries={matches} /> : <div className="publication-empty">
               <p>No publications found.</p>
               <p>Try another keyword, year, or venue.</p>
               <button type="button" onClick={resetSearchAndFilters}>Reset search and filters</button>
