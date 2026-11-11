@@ -32,6 +32,7 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
     return searchTerms.every((term) => searchable.includes(term));
   }
   const matches = publications.filter((paper) => matchesSearch(paper, query));
+  const matchingIds = new Set(matches.map((paper) => paper.id));
   const activeFilters = [selectedYear, selectedVenue].filter((value) => value !== null);
 
   function clearFilters() {
@@ -108,7 +109,8 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
         <div className="publication-results" id="publication-results" ref={resultsRef}>
           <p className="sr-only" role="status" aria-live="polite">{matches.length} {matches.length === 1 ? 'publication' : 'publications'} shown.</p>
           <div className="publication-result-list">
-            {matches.length > 0 ? <PublicationList entries={matches} /> : <div className="publication-empty">
+            <PublicationList entries={publications} visibleIds={matchingIds} />
+            {matches.length === 0 && <div className="publication-empty">
               <p>No publications found.</p>
               <p>Try another keyword, year, or venue.</p>
               <button type="button" onClick={resetSearchAndFilters}>Reset search and filters</button>

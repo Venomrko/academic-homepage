@@ -22,7 +22,7 @@ function VenueName({ name }: { name: string }) {
   })}</>;
 }
 
-function PublicationEntry({ paper }: { paper: Publication }) {
+function PublicationEntry({ paper, isVisible }: { paper: Publication; isVisible: boolean }) {
   const [abstractOpen, setAbstractOpen] = useState(false);
   const [citationOpen, setCitationOpen] = useState(false);
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
@@ -48,8 +48,15 @@ function PublicationEntry({ paper }: { paper: Publication }) {
   }
 
   return (
-    <article className="publication-entry" id={`publication-${paper.id}`}>
-      <div className={paper.image ? 'publication-entry-body with-image' : 'publication-entry-body'}>
+    <article
+      className="publication-entry"
+      id={`publication-${paper.id}`}
+      aria-hidden={!isVisible}
+      inert={!isVisible}
+      data-visible={isVisible}
+    >
+      <div className="publication-entry-inner">
+        <div className={paper.image ? 'publication-entry-body with-image' : 'publication-entry-body'}>
         <div className="publication-copy">
           {(venueShort || distinctions.length > 0) && (
             <div className="publication-meta">
@@ -152,6 +159,7 @@ function PublicationEntry({ paper }: { paper: Publication }) {
             </div>
           </div>
         )}
+        </div>
       </div>
     </article>
   );
@@ -159,20 +167,24 @@ function PublicationEntry({ paper }: { paper: Publication }) {
 
 export function PublicationList({
   entries = publications,
+  visibleIds,
 }: {
   entries?: readonly Publication[];
+  visibleIds?: ReadonlySet<string>;
 }) {
   const years = [...new Set(entries.map((paper) => paper.year))].sort((a, b) => b - a);
+  const activeIds = visibleIds ?? new Set(entries.map((paper) => paper.id));
 
   return (
     <div className="publication-years">
       {years.map((year) => {
         const yearEntries = entries.filter((paper) => paper.year === year);
+        const yearHasMatches = yearEntries.some((paper) => activeIds.has(paper.id));
         return (
-          <section className="publication-year" key={year} aria-label={`Publications from ${year}`}>
+          <section className="publication-year" key={year} aria-label={`Publications from ${year}`} data-visible={yearHasMatches}>
             <div className="year-marker">{year}</div>
             <div className="publication-year-entries">
-              {yearEntries.map((paper) => <PublicationEntry key={paper.id} paper={paper} />)}
+              {yearEntries.map((paper) => <PublicationEntry key={paper.id} paper={paper} isVisible={activeIds.has(paper.id)} />)}
             </div>
           </section>
         );
