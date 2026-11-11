@@ -77,15 +77,16 @@ export function ServicesTravel({
     }
 
     const observer = new ResizeObserver(scheduleMeasure);
-    observer.observe(region);
     observer.observe(content);
-    observer.observe(list);
+    const handleResize = () => scheduleMeasure();
+    window.addEventListener('resize', handleResize, { passive: true });
     scheduleMeasure();
     document.fonts.ready.then(scheduleMeasure);
     return () => {
       disposed = true;
       cancelAnimationFrame(frame);
       observer.disconnect();
+      window.removeEventListener('resize', handleResize);
     };
   }, [publicationRegionRef, items]);
 

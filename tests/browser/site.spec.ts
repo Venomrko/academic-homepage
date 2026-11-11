@@ -110,8 +110,12 @@ test('publication panels stay open during a matching search', async ({ page }, t
   await abstract.click();
   await citation.click();
   await expect(paper.locator('.publication-panel[data-open="true"]')).toHaveCount(2);
+  const visibleServices = page.locator('.services-travel-entry[aria-hidden="false"]');
+  const initialServiceCount = await visibleServices.count();
   await page.getByRole('searchbox', { name: 'Search publications by title, author, year, venue, or keyword' }).fill('Lifted State');
   await expect(page.locator('.publication-entry')).toHaveCount(1);
+  await expect(page.locator('.publication-result-list')).toHaveAttribute('data-result-sequence', '1');
+  await expect(visibleServices).toHaveCount(initialServiceCount);
   await expect(abstract).toHaveAttribute('aria-expanded', 'true');
   await expect(citation).toHaveAttribute('aria-expanded', 'true');
   // Expanded content spans the whole middle list, including its image column.

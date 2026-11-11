@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { Search, X } from 'lucide-react';
 import { publications, type Publication } from '@/lib/data/publications';
 import { PublicationList } from '@/components/publication-list';
@@ -20,9 +20,9 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
   const [query, setQuery] = useState('');
+  const [resultSequence, setResultSequence] = useState(0);
   const searchRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
-  const resultsListRef = useRef<HTMLDivElement>(null);
   const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const matches = publications.filter((paper) => {
     if (selectedYear !== null && paper.year !== selectedYear) return false;
@@ -34,25 +34,21 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
   });
   const activeFilters = [selectedYear, selectedVenue].filter((value) => value !== null);
 
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    // Animate filter changes without remounting papers or resetting open panels.
-    const animation = resultsListRef.current?.animate?.(
-      [{ opacity: 0, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }],
-      { duration: 240, easing: 'cubic-bezier(.22, 1, .36, 1)' },
-    );
-    return () => animation?.cancel();
-  }, [query, selectedYear, selectedVenue]);
+  function animateResults() {
+    setResultSequence((sequence) => sequence + 1);
+  }
 
   function clearFilters() {
     setSelectedYear(null);
     setSelectedVenue(null);
+    animateResults();
   }
 
   function resetSearchAndFilters() {
     setQuery('');
-    clearFilters();
+    setSelectedYear(null);
+    setSelectedVenue(null);
+    animateResults();
   }
 
   return (
@@ -68,14 +64,21 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
               aria-label="Search publications by title, author, year, venue, or keyword"
               placeholder="Search"
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                animateResults();
+              }}
               onKeyDown={(event) => {
-                if (event.key === 'Escape') setQuery('');
+                if (event.key === 'Escape') {
+                  setQuery('');
+                  animateResults();
+                }
               }}
               aria-controls="publication-results"
             />
             {query && <button type="button" aria-label="Clear publication search" onClick={() => {
               setQuery('');
+              animateResults();
               searchRef.current?.focus();
             }}><X size={15} aria-hidden="true" /></button>}
           </div>
@@ -92,11 +95,23 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
               <p className="publication-filter-label">Filter by {mode}</p>
               <div className="publication-filter-options" role="group" aria-label={`Filter publications by ${mode}`}>
                 {mode === 'year' ? <>
-                  <button type="button" aria-pressed={selectedYear === null} aria-controls="publication-results" onClick={() => setSelectedYear(null)}>All years</button>
-                  {years.map((year) => <button key={year} type="button" aria-pressed={selectedYear === year} aria-controls="publication-results" onClick={() => setSelectedYear((current) => current === year ? null : year)}>{year}</button>)}
+                  <button type="button" aria-pressed={selectedYear === null} aria-controls="publication-results" onClick={() => {
+                    setSelectedYear(null);
+                    animateResults();
+                  }}>All years</button>
+                  {years.map((year) => <button key={year} type="button" aria-pressed={selectedYear === year} aria-controls="publication-results" onClick={() => {
+                    setSelectedYear((current) => current === year ? null : year);
+                    animateResults();
+                  }}>{year}</button>)}
                 </> : <>
-                  <button type="button" aria-pressed={selectedVenue === null} aria-controls="publication-results" onClick={() => setSelectedVenue(null)}>All venues</button>
-                  {venues.map((venue) => <button key={venue} type="button" aria-pressed={selectedVenue === venue} aria-controls="publication-results" onClick={() => setSelectedVenue((current) => current === venue ? null : venue)}>{venue}</button>)}
+                  <button type="button" aria-pressed={selectedVenue === null} aria-controls="publication-results" onClick={() => {
+                    setSelectedVenue(null);
+                    animateResults();
+                  }}>All venues</button>
+                  {venues.map((venue) => <button key={venue} type="button" aria-pressed={selectedVenue === venue} aria-controls="publication-results" onClick={() => {
+                    setSelectedVenue((current) => current === venue ? null : venue);
+                    animateResults();
+                  }}>{venue}</button>)}
                 </>}
               </div>
             </div>
@@ -109,7 +124,7 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
 
         <div className="publication-results" id="publication-results" ref={resultsRef}>
           <p className="sr-only" role="status" aria-live="polite">{matches.length} {matches.length === 1 ? 'publication' : 'publications'} shown.</p>
-          <div className="publication-result-list" ref={resultsListRef}>
+          <div className="publication-result-list" data-result-sequence={resultSequence || undefined}>
             {matches.length > 0 ? <PublicationList entries={matches} /> : <div className="publication-empty">
               <p>No publications found.</p>
               <p>Try another keyword, year, or venue.</p>
