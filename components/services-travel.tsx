@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type RefObject } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type RefObject } from 'react';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 import { servicesAndTravel, type ServiceTravelEntry } from '@/lib/data/services';
 
@@ -22,6 +22,8 @@ export function ServicesTravel({
   const listRef = useRef<HTMLUListElement>(null);
   const [expanded, setExpanded] = useState(false);
   const [layout, setLayout] = useState<ListLayout | null>(null);
+  const [streamSequence, setStreamSequence] = useState(0);
+  const [streamFrom, setStreamFrom] = useState<number | null>(null);
   const orderedItems = [...items].sort((a, b) => {
     // Confirmed reviewer acceptance dates and conference dates share the
     // timeline; year-only reviews follow dated records in the same year.
@@ -92,6 +94,16 @@ export function ServicesTravel({
   const visibleCount = hasOverflow && !isExpanded ? layout!.visibleCount : items.length;
   const maxHeight = layout ? (isExpanded ? layout.fullHeight : layout.collapsedHeight) : undefined;
 
+  function toggleExpanded() {
+    if (!isExpanded) {
+      setStreamFrom(layout?.visibleCount ?? 0);
+      setStreamSequence((sequence) => sequence + 1);
+    } else {
+      setStreamFrom(null);
+    }
+    setExpanded((current) => !current);
+  }
+
   return <aside className="publication-services-rail" aria-labelledby="services-travel-title">
     <div className="services-travel-content" ref={contentRef}>
       <h2 id="services-travel-title">Services &amp; Travel<span className="accent-period">.</span></h2>
@@ -103,6 +115,10 @@ export function ServicesTravel({
             key={entry.id}
             aria-hidden={index >= visibleCount}
             inert={index >= visibleCount}
+            data-stream-seq={isExpanded && streamFrom !== null && index >= streamFrom ? streamSequence : undefined}
+            style={isExpanded && streamFrom !== null && index >= streamFrom
+              ? { '--stream-index': index - streamFrom } as CSSProperties
+              : undefined}
           >
             <div className="services-travel-entry-heading">
               <h3>{entry.title}{entry.showYearInTitle !== false && <> {entry.year}</>}</h3>
@@ -124,7 +140,7 @@ export function ServicesTravel({
           </li>)}
         </ul>
       </div>
-      {hasOverflow && <button className="services-travel-toggle" type="button" aria-expanded={isExpanded} aria-controls="services-travel-list" onClick={() => setExpanded((current) => !current)}>
+      {hasOverflow && <button className="services-travel-toggle" type="button" aria-expanded={isExpanded} aria-controls="services-travel-list" onClick={toggleExpanded}>
         {isExpanded ? <>See less <ArrowUp size={13} aria-hidden="true" /></> : <>See more <ArrowDown size={13} aria-hidden="true" /></>}
       </button>}
     </div>

@@ -85,12 +85,13 @@ test('main pages fit each viewport and theme', async ({ page }, testInfo) => {
 test('news expands and collapses, and system theme follows the browser', async ({ page }, testInfo) => {
   await visit(page, '/');
   await expect(page).toHaveTitle("Ren's Homepage");
-  const initialRows = await page.locator('#news-table tbody tr').count();
+  const visibleRows = page.locator('#news-table tbody tr[data-visible="true"]');
+  const initialRows = await visibleRows.count();
   await page.locator('.news-more').click();
   await expect(page.locator('.news-less')).toBeVisible();
-  expect(await page.locator('#news-table tbody tr').count()).toBeGreaterThan(initialRows);
+  expect(await visibleRows.count()).toBeGreaterThan(initialRows);
   await page.locator('.news-less').click();
-  await expect(page.locator('#news-table tbody tr')).toHaveCount(initialRows);
+  await expect(visibleRows).toHaveCount(initialRows);
   await expect(page.locator('.news-more')).toBeVisible();
 
   if (testInfo.project.metadata.theme === 'system') {

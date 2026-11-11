@@ -43,7 +43,7 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
       { duration: 240, easing: 'cubic-bezier(.22, 1, .36, 1)' },
     );
     return () => animation?.cancel();
-  }, [selectedYear, selectedVenue]);
+  }, [query, selectedYear, selectedVenue]);
 
   function clearFilters() {
     setSelectedYear(null);
