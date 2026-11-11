@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useState } from 'react';
+import { Fragment, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import { Check, Copy } from 'lucide-react';
 import { profile } from '@/lib/data/profile';
@@ -22,7 +22,17 @@ function VenueName({ name }: { name: string }) {
   })}</>;
 }
 
-function PublicationEntry({ paper }: { paper: Publication }) {
+function PublicationEntry({
+  paper,
+  animationSequence,
+  animationParity,
+  streamIndex,
+}: {
+  paper: Publication;
+  animationSequence?: number;
+  animationParity?: number;
+  streamIndex?: number;
+}) {
   const [abstractOpen, setAbstractOpen] = useState(false);
   const [citationOpen, setCitationOpen] = useState(false);
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
@@ -48,7 +58,15 @@ function PublicationEntry({ paper }: { paper: Publication }) {
   }
 
   return (
-    <article className="publication-entry" id={`publication-${paper.id}`}>
+    <article
+      className="publication-entry"
+      id={`publication-${paper.id}`}
+      data-result-sequence={animationSequence || undefined}
+      data-result-parity={animationSequence ? animationParity : undefined}
+      style={animationSequence && streamIndex !== undefined
+        ? { '--publication-stream-index': streamIndex } as CSSProperties
+        : undefined}
+    >
       <div className={paper.image ? 'publication-entry-body with-image' : 'publication-entry-body'}>
         <div className="publication-copy">
           {(venueShort || distinctions.length > 0) && (
@@ -157,8 +175,16 @@ function PublicationEntry({ paper }: { paper: Publication }) {
   );
 }
 
-export function PublicationList({ entries = publications }: { entries?: readonly Publication[] }) {
+export function PublicationList({
+  entries = publications,
+  animationSequence = 0,
+}: {
+  entries?: readonly Publication[];
+  animationSequence?: number;
+}) {
   const years = [...new Set(entries.map((paper) => paper.year))].sort((a, b) => b - a);
+  const entryOrder = new Map(entries.map((paper, index) => [paper.id, index]));
+  const animationParity = animationSequence % 2;
 
   return (
     <div className="publication-years">
@@ -168,7 +194,13 @@ export function PublicationList({ entries = publications }: { entries?: readonly
           <section className="publication-year" key={year} aria-label={`Publications from ${year}`}>
             <div className="year-marker">{year}</div>
             <div className="publication-year-entries">
-              {yearEntries.map((paper) => <PublicationEntry key={paper.id} paper={paper} />)}
+              {yearEntries.map((paper) => <PublicationEntry
+                key={paper.id}
+                paper={paper}
+                animationSequence={animationSequence}
+                animationParity={animationParity}
+                streamIndex={entryOrder.get(paper.id)}
+              />)}
             </div>
           </section>
         );

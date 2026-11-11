@@ -129,7 +129,7 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
             data-result-sequence={resultSequence || undefined}
             data-result-parity={resultSequence ? resultSequence % 2 : undefined}
           >
-            {matches.length > 0 ? <PublicationList entries={matches} /> : <div className="publication-empty">
+            {matches.length > 0 ? <PublicationList entries={matches} animationSequence={resultSequence} /> : <div className="publication-empty">
               <p>No publications found.</p>
               <p>Try another keyword, year, or venue.</p>
               <button type="button" onClick={resetSearchAndFilters}>Reset search and filters</button>
