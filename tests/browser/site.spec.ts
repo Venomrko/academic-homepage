@@ -120,6 +120,9 @@ test('publication panels stay open during a matching search', async ({ page }, t
   const resultAnimation = await page.locator('.publication-entry').first().evaluate((node) => getComputedStyle(node).animationName);
   expect(['publication-results-stream-a', 'publication-results-stream-b']).toContain(resultAnimation);
   await expect(visibleServices).toHaveCount(initialServiceCount);
+  await publicationSearch.fill('Lifted State ');
+  await page.waitForTimeout(240);
+  await expect(page.locator('.publication-result-list')).toHaveAttribute('data-result-sequence', '1');
   await expect(abstract).toHaveAttribute('aria-expanded', 'true');
   await expect(citation).toHaveAttribute('aria-expanded', 'true');
   // Expanded content spans the whole middle list, including its image column.

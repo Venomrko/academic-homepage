@@ -56,6 +56,11 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
     }, 180);
   }
 
+  function hasPublicationSetChanged(nextMatches: readonly Publication[]) {
+    if (nextMatches.length !== matches.length) return true;
+    return nextMatches.some((paper, index) => paper.id !== matches[index]?.id);
+  }
+
   useEffect(() => () => {
     if (animationTimerRef.current !== null) window.clearTimeout(animationTimerRef.current);
   }, []);
@@ -88,8 +93,9 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
               value={query}
               onChange={(event) => {
                 const nextValue = event.target.value;
+                const nextMatches = publications.filter((paper) => matchesSearch(paper, nextValue));
                 setQuery(nextValue);
-                scheduleResultsAnimation(publications.some((paper) => matchesSearch(paper, nextValue)));
+                scheduleResultsAnimation(nextMatches.length > 0 && hasPublicationSetChanged(nextMatches));
               }}
               onKeyDown={(event) => {
                 if (event.key === 'Escape') {
