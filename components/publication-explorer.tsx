@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Search, X } from 'lucide-react';
 import { publications, type Publication } from '@/lib/data/publications';
 import { PublicationList } from '@/components/publication-list';
@@ -23,6 +23,7 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
   const [resultSequence, setResultSequence] = useState(0);
   const searchRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const animationTimerRef = useRef<number | null>(null);
   function matchesSearch(paper: Publication, value: string) {
     const searchTerms = value.trim().toLowerCase().split(/\s+/).filter(Boolean);
     if (selectedYear !== null && paper.year !== selectedYear) return false;
@@ -36,8 +37,28 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
   const activeFilters = [selectedYear, selectedVenue].filter((value) => value !== null);
 
   function animateResults() {
+    if (animationTimerRef.current !== null) {
+      window.clearTimeout(animationTimerRef.current);
+      animationTimerRef.current = null;
+    }
     setResultSequence((sequence) => sequence + 1);
   }
+
+  function scheduleResultsAnimation(hasMatches: boolean) {
+    if (animationTimerRef.current !== null) {
+      window.clearTimeout(animationTimerRef.current);
+      animationTimerRef.current = null;
+    }
+    if (!hasMatches) return;
+    animationTimerRef.current = window.setTimeout(() => {
+      animationTimerRef.current = null;
+      setResultSequence((sequence) => sequence + 1);
+    }, 180);
+  }
+
+  useEffect(() => () => {
+    if (animationTimerRef.current !== null) window.clearTimeout(animationTimerRef.current);
+  }, []);
 
   function clearFilters() {
     setSelectedYear(null);
@@ -68,7 +89,7 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
               onChange={(event) => {
                 const nextValue = event.target.value;
                 setQuery(nextValue);
-                if (publications.some((paper) => matchesSearch(paper, nextValue))) animateResults();
+                scheduleResultsAnimation(publications.some((paper) => matchesSearch(paper, nextValue)));
               }}
               onKeyDown={(event) => {
                 if (event.key === 'Escape') {
