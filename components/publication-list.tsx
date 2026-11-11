@@ -22,7 +22,15 @@ function VenueName({ name }: { name: string }) {
   })}</>;
 }
 
-function PublicationEntry({ paper, isVisible }: { paper: Publication; isVisible: boolean }) {
+function PublicationEntry({
+  paper,
+  isVisible,
+  isLastVisible,
+}: {
+  paper: Publication;
+  isVisible: boolean;
+  isLastVisible: boolean;
+}) {
   const [abstractOpen, setAbstractOpen] = useState(false);
   const [citationOpen, setCitationOpen] = useState(false);
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
@@ -54,6 +62,7 @@ function PublicationEntry({ paper, isVisible }: { paper: Publication; isVisible:
       aria-hidden={!isVisible}
       inert={!isVisible}
       data-visible={isVisible}
+      data-last-visible={isLastVisible}
     >
       <div className="publication-entry-inner">
         <div className={paper.image ? 'publication-entry-body with-image' : 'publication-entry-body'}>
@@ -179,12 +188,19 @@ export function PublicationList({
     <div className="publication-years">
       {years.map((year) => {
         const yearEntries = entries.filter((paper) => paper.year === year);
-        const yearHasMatches = yearEntries.some((paper) => activeIds.has(paper.id));
+        const visibleYearEntries = yearEntries.filter((paper) => activeIds.has(paper.id));
+        const yearHasMatches = visibleYearEntries.length > 0;
+        const lastVisibleId = visibleYearEntries.at(-1)?.id;
         return (
           <section className="publication-year" key={year} aria-label={`Publications from ${year}`} data-visible={yearHasMatches}>
             <div className="year-marker">{year}</div>
             <div className="publication-year-entries">
-              {yearEntries.map((paper) => <PublicationEntry key={paper.id} paper={paper} isVisible={activeIds.has(paper.id)} />)}
+              {yearEntries.map((paper) => <PublicationEntry
+                key={paper.id}
+                paper={paper}
+                isVisible={activeIds.has(paper.id)}
+                isLastVisible={paper.id === lastVisibleId}
+              />)}
             </div>
           </section>
         );

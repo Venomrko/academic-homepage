@@ -114,7 +114,10 @@ test('publication panels stay open during a matching search', async ({ page }, t
   const initialServiceCount = await visibleServices.count();
   const publicationSearch = page.getByRole('searchbox', { name: 'Search publications by title, author, year, venue, or keyword' });
   await publicationSearch.fill('Lifted State');
-  await expect(page.locator('.publication-entry[data-visible="true"]')).toHaveCount(1);
+  const visiblePublication = page.locator('.publication-entry[data-visible="true"]');
+  await expect(visiblePublication).toHaveCount(1);
+  await expect(visiblePublication).toHaveAttribute('data-last-visible', 'true');
+  await expect.poll(() => visiblePublication.evaluate((node) => getComputedStyle(node).borderBottomWidth)).toBe('0px');
   await expect(visibleServices).toHaveCount(initialServiceCount);
   await expect(abstract).toHaveAttribute('aria-expanded', 'true');
   await expect(citation).toHaveAttribute('aria-expanded', 'true');

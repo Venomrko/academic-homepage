@@ -326,6 +326,7 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .publication-entry { display: grid; grid-template-rows: minmax(0, 1fr); overflow: hidden; opacity: 1; transform: translateY(0); transition: grid-template-rows .42s cubic-bezier(.22, 1, .36, 1), padding .42s cubic-bezier(.22, 1, .36, 1), margin .42s cubic-bezier(.22, 1, .36, 1), border-color .42s ease, opacity .3s ease, transform .42s cubic-bezier(.22, 1, .36, 1); }
 .publication-entry-inner { min-height: 0; overflow: hidden; }
 .publication-entry[aria-hidden="true"] { grid-template-rows: 0fr; padding-bottom: 0; margin-bottom: 0; border-bottom-color: transparent; opacity: 0; transform: translateY(-5px); }
+.publication-entry[data-last-visible="true"] { margin-bottom: 0; border-bottom: 0; }
 .publication-entry-body { display: grid; grid-template-columns: minmax(0, 1fr); }
 .publication-entry-body.with-image { grid-template-columns: minmax(0, 1fr) 250px; gap: 28px; align-items: start; }
 .publication-copy { min-width: 0; }
