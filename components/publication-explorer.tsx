@@ -53,7 +53,7 @@ export function PublicationExplorer({ heading, children }: { heading: ReactNode;
     animationTimerRef.current = window.setTimeout(() => {
       animationTimerRef.current = null;
       setResultSequence((sequence) => sequence + 1);
-    }, 180);
+    }, 500);
   }
 
   function hasPublicationSetChanged(nextMatches: readonly Publication[]) {
