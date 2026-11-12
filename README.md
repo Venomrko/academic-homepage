@@ -1,6 +1,6 @@
 # Academic Homepage
 
-This repository contains the source code for [academic.solitudinis.cc](https://academic.solitudinis.cc/), a personal academic homepage.
+This repository contains the source code for [academic.solitudinis.cc](https://academic.solitudinis.cc/), my personal academic homepage.
 
 The site brings together a short biography, research interests, publications, projects, personal writing, a CV, and selected academic service and travel records. It is built for personal use and reflects the author's current academic work.
 
