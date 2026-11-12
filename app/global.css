@@ -115,9 +115,10 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px soli
 html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scroll-bar-size: 0px !important; }
 #nd-nav { background: color-mix(in srgb, var(--color-fd-background) 88%, transparent); backdrop-filter: blur(18px); border-color: var(--line); }
 #nd-nav nav > div { width: min(var(--landing-width), calc(100% - 96px)); max-width: var(--landing-width); padding-inline: 0; }
-#nd-nav a[data-active] { position: relative; font-size: 16px; font-weight: 400; color: var(--nav-ink); transition: color .2s, background-color .2s, transform .2s; }
-#nd-nav a[data-active]::after { content: ''; position: absolute; bottom: 1px; left: 8px; right: 8px; height: 1.5px; border-radius: 2px; background: var(--accent); opacity: 0; transform: scaleX(.35); transform-origin: center; transition: opacity .2s, transform .25s; }
-#nd-nav a[data-active]:hover { transform: translateY(-1px); color: var(--nav-ink); }
+#nd-nav a[data-active] { position: relative; font-size: 16px; font-weight: 400; color: var(--nav-ink); transition: color .2s, background-color .2s; }
+#nd-nav a[data-active="true"] { font-weight: 600; }
+#nd-nav a[data-active]::after { content: ''; position: absolute; bottom: 1px; left: 8px; right: 8px; height: 2px; border-radius: 2px; background: var(--accent); opacity: 0; transform: scaleX(.35); transform-origin: center; transition: opacity .2s, transform .25s; }
+#nd-nav a[data-active]:hover { color: var(--nav-ink); }
 #nd-nav a[data-active]:is(:hover, :focus-visible, [data-active='true'])::after { opacity: 1; transform: scaleX(1); }
 .page-transition { min-width: 0; flex: 1; animation: page-enter .42s cubic-bezier(.22, 1, .36, 1) both; }
 @keyframes page-enter { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: none; } }
