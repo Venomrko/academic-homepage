@@ -1,6 +1,6 @@
-# Ren's Academic Homepage
+# Academic Homepage
 
-This repository contains the source code for [academic.solitudinis.cc](https://academic.solitudinis.cc/), Ren Zhuang's personal academic homepage.
+This repository contains the source code for [academic.solitudinis.cc](https://academic.solitudinis.cc/), a personal academic homepage.
 
 The site brings together a short biography, research interests, publications, projects, personal writing, a CV, and selected academic service and travel records. It is built for personal use and reflects the author's current academic work.
 
@@ -21,4 +21,4 @@ Most profile and publication content lives in `lib/data/`; personal writing live
 
 The source code is available under the [MIT License](LICENSE).
 
-The personal content, CV, publications, photographs, illustrations, and other original materials in this repository remain the copyright of Ren Zhuang unless otherwise noted.
+The personal content, CV, publications, photographs, illustrations, and other original materials in this repository remain the copyright of the author unless otherwise noted.
