@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { ArrowUpRight, BookOpen, FileText, FolderOpen } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 type ResourceCardProps = {
   href: string;
@@ -8,7 +8,7 @@ type ResourceCardProps = {
   titleSuffix?: ReactNode;
   description?: string;
   lang?: string;
-  kind?: 'article' | 'project' | 'journal';
+  label?: string;
   metadata?: ReactNode;
   footer?: ReactNode;
   featured?: boolean;
@@ -20,11 +20,9 @@ type ResourceCardProps = {
 };
 
 export function ResourceCard({
-  href, title, titleSuffix, description, lang, kind = 'article', metadata, footer,
+  href, title, titleSuffix, description, lang, label, metadata, footer,
   featured = false, artwork, artworkLayout = 'side', artworkSide = 'right', artworkClassName = '', className = '',
 }: ResourceCardProps) {
-  const Icon = kind === 'project' ? FolderOpen : kind === 'journal' ? BookOpen : FileText;
-  const label = kind === 'project' ? 'Project' : kind === 'journal' ? 'Personal essays' : 'Article';
   const titleId = `resource-${encodeURIComponent(href)}`;
   const hasArtwork = artwork != null || Boolean(artworkClassName);
   const isHeaderArtwork = hasArtwork && artworkLayout === 'header';
@@ -40,10 +38,10 @@ export function ResourceCard({
 
   return (
     <Link href={href} className={`resource-card${featured ? ' resource-card-featured' : ''} ${className}`.trim()} aria-labelledby={titleId}>
-      <div className="resource-card-header">
-        <span className="resource-card-kind"><Icon size={14} strokeWidth={1.4} aria-hidden="true" />{label}</span>
+      {(label || metadata) && <div className="resource-card-header">
+        {label && <span className="resource-card-label">{label}</span>}
         {metadata && <span className="resource-card-metadata">{metadata}</span>}
-      </div>
+      </div>}
       <div className={`resource-card-body${sideArtwork ? ` has-artwork artwork-${artworkSide}` : ''}`}>
         {sideArtwork && artworkSide === 'left' && art}
         <div className="resource-card-copy">

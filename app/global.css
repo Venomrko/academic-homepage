@@ -465,9 +465,8 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .resource-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .resource-card-featured { grid-column: span 2; }
 .resource-card-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 45px; padding: 12px 24px; border-bottom: 1px solid var(--line); font-family: var(--font-sans); font-size: 12px; line-height: 1.5; }
-.resource-card-kind { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.resource-card-kind svg { flex-shrink: 0; }
-.resource-card-metadata { min-width: 0; text-align: right; color: var(--muted); overflow-wrap: anywhere; }
+.resource-card-label { min-width: 0; overflow-wrap: anywhere; }
+.resource-card-metadata { min-width: 0; margin-inline-start: auto; text-align: right; color: var(--muted); overflow-wrap: anywhere; }
 .resource-card-body { display: flex; flex: 1; min-width: 0; min-height: 280px; }
 .resource-card-featured .resource-card-body { min-height: 310px; }
 .resource-card-body.has-artwork { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); }

@@ -28,7 +28,7 @@ export default function BlogPage() {
     <div className="resource-grid">
       <ResourceCard
         href="/blog/life"
-        kind="journal"
+        label="Personal essays"
         title="A space for life"
         titleSuffix={<span className="accent-period">.</span>}
         featured
@@ -41,6 +41,7 @@ export default function BlogPage() {
         key={post.url}
         className="research-story"
         href={post.url}
+        label={post.data.cardLabel ?? post.data.category}
         title={post.data.title}
         lang={post.data.lang}
         description={post.data.description}

@@ -28,11 +28,12 @@ export default function PersonalEssaysPage() {
         key={post.url}
         className="life-story"
         href={post.url}
+        label={post.data.cardLabel ?? post.data.category}
         title={post.data.title}
         lang={post.data.lang}
         description={post.data.description}
         metadata={<time dateTime={post.data.journeyDate ?? post.data.date} title={post.data.journeyDate ? 'Journey date' : 'Publication date'}>{formatDate(post.data.journeyDate ?? post.data.date)}</time>}
-        footer={<><span>{post.data.category}</span><span className="resource-card-reading-time">{post.data.readingTime} read</span></>}
+        footer={<span className="resource-card-reading-time">{post.data.readingTime} read</span>}
         artwork={<ConceptStamp slug={post.slugs[0]} size="md" />}
         artworkLayout="header"
         artworkClassName="concept-stamp-art"

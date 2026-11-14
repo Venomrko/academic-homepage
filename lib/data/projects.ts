@@ -30,6 +30,7 @@ type ProjectSection = {
 export type Project = {
 	updated: string;
 	slug: string;
+	cardLabel: string;
 	title: string;
 	subtitle: string;
 	description: string;
@@ -65,6 +66,7 @@ export const projects: readonly Project[] = [
 	{
 		updated: "2026-11-10",
 		slug: "climate-change-dialogue-system",
+		cardLabel: "Master’s thesis",
 		title: "Climate change dialogue system",
 		subtitle: "Domain retrieval and self-corrective reasoning.",
 		description:
@@ -305,6 +307,7 @@ export const projects: readonly Project[] = [
 	{
 		updated: "2026-11-10",
 		slug: "industrial-digital-twins",
+		cardLabel: "Software prototyping",
 		title: "Digital twin application",
 		subtitle: "From industrial requirements to interactive prototypes.",
 		description:
@@ -334,6 +337,7 @@ export const projects: readonly Project[] = [
 	{
 		updated: "2026-11-10",
 		slug: "blockchain-digital-solutions",
+		cardLabel: "Applied development",
 		title: "Blockchain & digital solutions",
 		subtitle: "Connecting enterprise needs with software implementation.",
 		description:

@@ -19,7 +19,7 @@ export default function ProjectsPage() {
         key={project.slug}
         className="project-card"
         href={`/projects/${project.slug}`}
-        kind="project"
+        label={project.cardLabel}
         title={project.title}
         description={project.description}
         metadata={project.years}
