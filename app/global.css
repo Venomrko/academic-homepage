@@ -194,7 +194,7 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .research-direction h3, .publication-entry h3 { font-family: var(--font-sans); font-size: var(--content-title-size); line-height: 1.4; font-weight: 600; letter-spacing: -.2px; color: var(--research-ink); }
 .research-direction h3 { font-size: 19px; line-height: 1.2; }
 .research-direction > p { font-family: var(--font-serif); font-size: 15px; line-height: 1.4; font-weight: 400; color: var(--research-ink); max-width: 300px; margin-top: 8px; text-wrap: pretty; }
-.updates-layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 44px; padding-top: 48px; padding-bottom: 72px; }
+.updates-layout { --updates-copy-size: 14px; display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 44px; padding-top: 48px; padding-bottom: 72px; }
 .news-section { display: flex; flex-direction: column; min-width: 0; }
 .news-heading { display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-bottom: 38px; }
 .news-content { display: flex; flex-direction: column; flex: 1; width: 100%; min-width: 0; }
@@ -206,7 +206,7 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .news-search input::-webkit-search-cancel-button { -webkit-appearance: none; }
 .news-search button { display: grid; place-items: center; flex-shrink: 0; width: 24px; height: 24px; border-radius: 4px; }
 .news-search button:hover { color: var(--color-fd-foreground); background: var(--soft-surface); }
-.news-table { width: 100%; border-collapse: collapse; table-layout: fixed; text-align: left; font-size: 14px; line-height: 1.5; }
+.news-table { width: 100%; border-collapse: collapse; table-layout: fixed; text-align: left; font-size: var(--updates-copy-size); line-height: 1.5; }
 .news-date-column { width: 23%; }
 .news-category-column { width: 23%; }
 .news-table th { padding: 8px 24px 16px 0; text-transform: uppercase; font-size: 12px; font-weight: 400; color: var(--muted); }
@@ -237,7 +237,7 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .honor-entry[aria-hidden='true'] { grid-template-rows: 0fr; padding-bottom: 0; margin-bottom: 0; border-bottom-color: transparent; opacity: 0; transform: translateY(-5px); }
 .honor-entry-inner[data-stream-seq] { animation: stream-item-in .44s cubic-bezier(.22, 1, .36, 1) both; animation-delay: calc(var(--stream-index, 0) * 42ms); }
 .honor-year { display: block; margin-bottom: 6px; color: var(--quiet); font-family: var(--font-serif); font-size: var(--sidebar-meta-size); line-height: 1.4; }
-.honor-copy h3 { color: var(--research-ink); font-family: var(--font-sans); font-size: 15px; line-height: 1.3; font-weight: 400; overflow-wrap: anywhere; }
+.honor-copy h3 { color: var(--research-ink); font-family: var(--font-sans); font-size: var(--updates-copy-size); line-height: 1.3; font-weight: 400; overflow-wrap: anywhere; }
 .honor-copy p { margin-top: 4px; font-family: var(--font-serif); font-size: var(--sidebar-meta-size); line-height: 1.4; color: var(--muted); overflow-wrap: anywhere; }
 .honors-controls { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: auto; padding-top: 32px; }
 .honors-more, .honors-less { display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-size: 12px; color: var(--muted); transition: color .18s, background .18s; }
@@ -287,13 +287,13 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
   .research-showcase { padding-block: 34px 36px; }
   .research-directions { grid-template-columns: minmax(0, 1fr); gap: 28px; margin-top: 33px; }
   .research-direction > p { max-width: 490px; }
-  .updates-layout { padding-top: 34px; padding-bottom: 48px; }
+  .updates-layout { --updates-copy-size: 12px; padding-top: 34px; padding-bottom: 48px; }
   .honors-list { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .honor-entry { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 15px; padding-bottom: 16px; margin-bottom: 16px; }
   .honor-year { padding-top: 3px; }
   .news-heading { align-items: stretch; flex-direction: column; gap: 22px; margin-bottom: 26px; }
   .news-search { width: 100%; }
-  .news-table { font-size: 12px; line-height: 1.6; }
+  .news-table { line-height: 1.6; }
   .news-date-column { width: 27%; }
   .news-category-column { width: 23%; }
   .news-table th { font-size: 10px; padding-right: 12px; }
