@@ -8,17 +8,55 @@ import { Star } from 'lucide-react';
 import { profile } from '@/lib/data/profile';
 
 const celebrationDuration = 3600;
-const sparkles = [
-  [8, 18, 18, 0], [22, 9, 24, .08], [38, 27, 14, .18], [62, 12, 22, .12],
-  [82, 22, 18, .3], [93, 42, 26, .06], [12, 52, 22, .22], [29, 67, 16, .14],
-  [48, 45, 20, .34], [72, 57, 24, .2], [87, 78, 16, .1], [7, 85, 18, .28],
-  [42, 88, 24, .16], [61, 76, 16, .26], [54, 7, 14, .24], [94, 9, 18, .04],
+const sparkleTemplates = [
+  [18, 0], [24, .08], [14, .18], [22, .12],
+  [18, .3], [26, .06], [22, .22], [16, .14],
+  [20, .34], [24, .2], [16, .1], [18, .28],
+  [24, .16], [16, .26], [14, .24], [18, .04],
 ] as const;
+const sparklePalette = ['#FF5522', 'var(--accent-fill)', '#a795d8', '#88b58c'] as const;
+
+function createSparkles() {
+  const colors = sparkleTemplates.map((_, index) => sparklePalette[index % sparklePalette.length]);
+  for (let index = colors.length - 1; index > 0; index--) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [colors[index], colors[swapIndex]] = [colors[swapIndex], colors[index]];
+  }
+
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  return sparkleTemplates.map(([size, delay], index) => {
+    const left = 8;
+    const top = 72;
+    const horizontalRange = Math.max(0, width - size - left * 2);
+    const verticalRange = Math.max(0, height - size - top - 8);
+    let x = Math.random();
+    let y = Math.random();
+
+    // Let a few stars reach the edges; the rest can gather freely across the screen.
+    if (index < 4) {
+      const edge = Math.floor(Math.random() * 4);
+      if (edge === 0) x *= .12;
+      else if (edge === 1) x = 1 - x * .12;
+      else if (edge === 2) y *= .12;
+      else y = 1 - y * .12;
+    }
+
+    return {
+      x: (left + x * horizontalRange) / width * 100,
+      y: (top + y * verticalRange) / height * 100,
+      size,
+      delay,
+      color: colors[index],
+    };
+  });
+}
 
 export function SiteBrand({ className, href = '/', ...linkProps }: ComponentProps<'a'>) {
   const pathname = usePathname();
   const sequence = useRef(0);
-  const [burst, setBurst] = useState<{ id: number; pathname: string } | null>(null);
+  const [burst, setBurst] = useState<{ id: number; pathname: string; sparkles: ReturnType<typeof createSparkles> } | null>(null);
   const celebrating = burst !== null && burst.pathname === pathname;
 
   useEffect(() => {
@@ -62,7 +100,7 @@ export function SiteBrand({ className, href = '/', ...linkProps }: ComponentProp
       className="brand-star-trigger"
       aria-label="Make the page sparkle"
       data-celebrating={celebrating ? 'true' : undefined}
-      onClick={() => setBurst({ id: ++sequence.current, pathname })}
+      onClick={() => setBurst({ id: ++sequence.current, pathname, sparkles: createSparkles() })}
     >
       <Star key={burst?.id ?? 0} className="brand-star" size={20} fill="currentColor" strokeWidth={1.5} aria-hidden="true" />
     </button>
@@ -78,12 +116,12 @@ export function SiteBrand({ className, href = '/', ...linkProps }: ComponentProp
       >
         <div className="star-celebration-wash" aria-hidden="true" />
         <div className="star-celebration-sparkles" aria-hidden="true">
-          {sparkles.map(([x, y, size, delay], index) => <Star
+          {burst.sparkles.map(({ x, y, size, delay, color }, index) => <Star
             key={index}
             className="star-celebration-sparkle"
             fill="currentColor"
             strokeWidth={1}
-            style={{ left: `${x}%`, top: `${y}%`, width: size, height: size, animationDelay: `${delay}s` }}
+            style={{ left: `${x}%`, top: `${y}%`, width: size, height: size, color, animationDelay: `${delay}s` }}
           />)}
         </div>
       </div>,

@@ -1,0 +1,85 @@
+{
+  "ijcnn-2024-yokohama-first-journey": {
+    "title": "Japan · 2024",
+    "venues": [
+      { "name": "PACIFICO Yokohama", "city": "Yokohama", "coordinates": [139.63638889, 35.45833333] }
+    ],
+    "bounds": [[138.7275, 34.90305556], [139.69222222, 35.85566667]],
+    "visited": ["Yokohama", "Tokyo", "Hannō", "Hakone", "Kamakura", "Mount Fuji summit", "Izu", "Mount Ōmuro", "Izu Cactus Zoo"],
+    "landmarks": [
+      { "name": "Mount Fuji", "coordinates": [138.7275, 35.36083333] },
+      { "name": "Mount Ōmuro", "coordinates": [139.09472222, 34.90305556] }
+    ],
+    "places": [
+      { "name": "Yokohama", "coordinates": [139.63805556, 35.44416667] },
+      { "name": "Tokyo", "coordinates": [139.69222222, 35.68972222] },
+      { "name": "Hannō", "coordinates": [139.32772222, 35.85566667] },
+      { "name": "Hakone", "coordinates": [139.02472222, 35.18944444] },
+      { "name": "Kamakura", "coordinates": [139.5525, 35.31972222] },
+      { "name": "Izu", "coordinates": [139.09472222, 34.90305556] }
+    ]
+  },
+  "smc-2025-vienna-europe": {
+    "title": "Austria & Italy · 2025",
+    "venues": [
+      { "name": "Austria Center Vienna", "city": "Vienna", "coordinates": [16.41416667, 48.23527778] }
+    ],
+    "places": [
+      { "name": "Vienna", "coordinates": [16.3725, 48.2083], "sights": ["Schönbrunn Palace", "St. Stephen's Cathedral", "Kunsthistorisches Museum", "State Opera", "Musikverein"] },
+      { "name": "Hallstatt", "coordinates": [13.649, 47.562], "sights": ["Gosau", "Waldbach Ursprung", "Steinernes Herz"] },
+      { "name": "Rome", "coordinates": [12.48277778, 41.89333333], "sights": ["Colosseum", "Palatine Hill", "Vatican Museums", "Capitoline Museums", "Pantheon"] },
+      { "name": "Florence", "coordinates": [11.25416667, 43.77138889], "sights": ["Uffizi Gallery", "Cathedral", "Piazzale Michelangelo"] }
+    ]
+  },
+  "iconip-2025-okinawa": {
+    "title": "Okinawa · 2025",
+    "venues": [
+      { "name": "OIST Conference Center", "city": "Onna", "coordinates": [127.83105556, 26.46194722] }
+    ],
+    "bounds": [[127.67916667, 26.13733611], [127.87794, 26.69439]],
+    "visited": ["Naha", "Onna", "OIST", "Naminoue Shrine", "Kokusai-dori", "Churaumi Aquarium", "Oceanic Culture Museum", "Bise-Fukugi", "Cape Chinen", "Sefa-utaki", "Gyokusendo", "Cape Zanpa", "Katsuren Castle", "Senaga Island"],
+    "landmarks": [
+      { "name": "Churaumi Aquarium", "coordinates": [127.87794, 26.69439] },
+      { "name": "Naminoue Shrine", "coordinates": [127.671352, 26.220636] },
+      { "name": "Cape Zanpa", "coordinates": [127.71416667, 26.43972222] },
+      { "name": "Sefa-utaki", "coordinates": [127.82666667, 26.17333333] },
+      { "name": "Gyokusendo", "coordinates": [127.75180833, 26.13733611] }
+    ],
+    "places": [
+      { "name": "Naha", "coordinates": [127.67916667, 26.21222222] },
+      { "name": "Onna", "coordinates": [127.85, 26.48333333] }
+    ]
+  },
+  "icml-2026-seoul": {
+    "title": "South Korea · 2026",
+    "venues": [
+      { "name": "COEX", "city": "Seoul", "coordinates": [127.05888889, 37.51194444] }
+    ],
+    "bounds": [[126.51666667, 37.26666667], [127.05888889, 37.56]],
+    "visited": ["Seoul", "COEX", "Gyeongbokgung Palace", "Insadong", "Changdeokgung Palace", "Bongeunsa", "N Seoul Tower", "National Museum of Korea", "Cheonggyecheon", "Suwon", "Hwaseong Haenggung", "Incheon", "Yeongjong Island", "Eurwangni Beach"],
+    "landmarks": [
+      { "name": "Gyeongbokgung Palace", "coordinates": [126.9768, 37.579884] },
+      { "name": "National Museum of Korea", "coordinates": [126.9803, 37.5239] },
+      { "name": "Hwaseong Haenggung", "coordinates": [127.0143835, 37.2821998] },
+      { "name": "Eurwangni Beach", "coordinates": [126.3723626, 37.4469238] }
+    ],
+    "places": [
+      { "name": "Seoul", "coordinates": [126.99, 37.56] },
+      { "name": "Suwon", "coordinates": [127.01666667, 37.26666667] },
+      { "name": "Incheon", "coordinates": [126.63333333, 37.48333333] },
+      { "name": "Yeongjong Island", "coordinates": [126.51666667, 37.48333333] }
+    ]
+  },
+  "ijcai-2026-bremen-europe": {
+    "title": "Germany & France · 2026",
+    "venues": [
+      { "name": "Congress Centrum Bremen", "city": "Bremen", "coordinates": [8.81579, 53.08752] }
+    ],
+    "places": [
+      { "name": "Bremen", "coordinates": [8.80722222, 53.07583333], "sights": ["Town Hall", "Market Square", "Roland statue", "Cathedral", "Schlachte", "Schnoor"] },
+      { "name": "Munich", "coordinates": [11.575, 48.1375], "sights": ["Marienplatz", "New Town Hall", "Asamkirche", "Neuschwanstein Castle", "Alpsee", "Zugspitze", "Eibsee"] },
+      { "name": "Paris", "coordinates": [2.3522, 48.8567], "sights": ["Marais", "Sainte-Chapelle", "Notre-Dame", "Louvre", "Eiffel Tower", "Versailles", "Palais Garnier"] },
+      { "name": "Berlin", "coordinates": [13.405, 52.52], "sights": ["Brandenburg Gate", "Reichstag", "Berlin Wall", "Potsdamer Platz", "Sanssouci", "Potsdam Old Town"] }
+    ]
+  }
+}

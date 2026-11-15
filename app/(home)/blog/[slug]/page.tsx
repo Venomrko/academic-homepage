@@ -5,7 +5,6 @@ import { ArrowLeft } from 'lucide-react';
 import { InlineTOC } from 'fumadocs-ui/components/inline-toc';
 import { ConceptStamp } from '@/components/concept-stamp';
 import { blog } from '@/lib/source';
-import { profile } from '@/lib/data/profile';
 import { formatDate } from '@/lib/format';
 import { getMDXComponents } from '@/components/mdx';
 import { pageMetadata } from '@/lib/site-metadata';
@@ -48,9 +47,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       </div>
       <div className="article-meta">
-        <span className="author-avatar">{profile.initials}</span>
-        <span>{profile.name}</span>
-        <span className="meta-dot">·</span>
         <time dateTime={page.data.date} title="Date written">
           {page.data.journeyDate && 'Written '}{formatDate(page.data.date, 'long')}
         </time>

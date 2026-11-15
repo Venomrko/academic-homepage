@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { blog } from '@/lib/source';
 import { socialImage } from '@/lib/social-image';
 
-export const alt = 'Research notes and personal essays by Ren Zhuang';
+export const alt = 'Research notes and personal essays';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 

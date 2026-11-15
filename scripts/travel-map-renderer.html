@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Travel map label export</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css">
+  <script src="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js"></script>
+  <style>html, body, #map { width: 720px; height: 420px; margin: 0; padding: 0; overflow: hidden; }</style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    window.mapReady = false;
+    window.renderTravelMap = async (journey, theme) => {
+      window.mapReady = false;
+      window.currentMap?.remove();
+      for (const venue of journey.venues ?? []) {
+        if (!venue.city) throw new Error(`Missing city for conference venue ${venue.name}`);
+      }
+      const venueCities = new Set((journey.venues ?? []).map((venue) => venue.city));
+      const places = [
+        ...journey.places.filter((place) => !venueCities.has(place.name)).map((place) => ({ ...place, kind: 'place' })),
+        ...(journey.landmarks ?? []).map((place) => ({ ...place, kind: 'landmark' })),
+        ...(journey.venues ?? []).map((place) => ({
+          ...place,
+          kind: 'venue',
+        })),
+      ];
+      const coordinates = [...(journey.bounds ?? []), ...places.map((place) => place.coordinates)];
+      const bounds = coordinates.reduce((bounds, point) => bounds.extend(point), new maplibregl.LngLatBounds(coordinates[0], coordinates[0]));
+      const style = await fetch(`https://tiles.openfreemap.org/styles/${theme === 'dark' ? 'dark' : 'positron'}`).then((response) => {
+        if (!response.ok) throw new Error(`Map style HTTP ${response.status}`);
+        return response.json();
+      });
+      const englishName = ['coalesce', ['get', 'name:en'], ['get', 'name_en'], ['get', 'name:latin'], ['get', 'name']];
+      const visitedNames = [...journey.places, ...(journey.landmarks ?? []), ...(journey.venues ?? [])].map((place) => place.name.toLowerCase());
+      const markerColor = theme === 'dark' ? '#f09b7c' : '#bc5030';
+      const backgroundLayers = [];
+      for (const layer of style.layers) {
+        if (layer.type !== 'symbol') continue;
+        const country = layer['source-layer'] === 'place' && layer.id.includes('country');
+        const city = layer['source-layer'] === 'place' && layer.id.includes('city');
+        layer.layout ??= {};
+        if (!country && !city) {
+          layer.layout.visibility = 'none';
+          continue;
+        }
+        layer.layout['text-field'] = englishName;
+        layer.layout['text-font'] = ['Noto Sans Regular'];
+        layer.layout['text-size'] = country ? 11.5 : 10;
+        layer.layout['text-transform'] = 'none';
+        layer.layout['text-letter-spacing'] = 0;
+        layer.layout['text-padding'] = 10;
+        layer.layout['icon-image'] = '';
+        layer.paint ??= {};
+        layer.paint['icon-opacity'] = 0;
+        layer.paint['text-color'] = theme === 'dark' ? '#7d807c' : '#888b86';
+        layer.paint['text-opacity'] = 0.8;
+        layer.paint['text-halo-color'] = theme === 'dark' ? '#141413' : '#ffffff';
+        layer.paint['text-halo-width'] = 1;
+        layer.filter = [
+          'all',
+          ...(layer.filter ? [layer.filter] : []),
+          ...(city ? [['<=', ['coalesce', ['get', 'rank'], 99], 3]] : []),
+          ['!', ['in', ['downcase', englishName], ['literal', visitedNames]]],
+        ];
+        backgroundLayers.push({ id: layer.id, country, font: layer.layout['text-font'], size: layer.layout['text-size'] });
+      }
+      const map = window.currentMap = new maplibregl.Map({
+        container: 'map',
+        style,
+        bounds,
+        fitBoundsOptions: { padding: 62 },
+        interactive: false,
+        attributionControl: false,
+        fadeDuration: 0,
+        pixelRatio: 2,
+        canvasContextAttributes: { preserveDrawingBuffer: true },
+      });
+      map.on('error', (event) => console.error(event.error?.message));
+      await new Promise((resolve) => map.once('load', resolve));
+      map.addSource('journal-places', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: places.map((place, priority) => ({
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: place.coordinates },
+            properties: { name: place.name, kind: place.kind, priority },
+          })),
+        },
+      });
+      map.addLayer({
+        id: 'journal-place-dots',
+        type: 'circle',
+        source: 'journal-places',
+        filter: ['!=', ['get', 'kind'], 'venue'],
+        paint: {
+          'circle-radius': 4.5,
+          'circle-color': markerColor,
+          'circle-stroke-color': theme === 'dark' ? '#141413' : '#ffffff',
+          'circle-stroke-width': 2,
+        },
+      });
+      const star = document.createElement('canvas');
+      star.width = star.height = 40;
+      const starContext = star.getContext('2d');
+      starContext.beginPath();
+      for (let vertex = 0; vertex < 10; vertex++) {
+        const angle = -Math.PI / 2 + vertex * Math.PI / 5;
+        const radius = vertex % 2 === 0 ? 17 : 7.5;
+        const x = 20 + Math.cos(angle) * radius;
+        const y = 20 + Math.sin(angle) * radius;
+        if (vertex === 0) starContext.moveTo(x, y);
+        else starContext.lineTo(x, y);
+      }
+      starContext.closePath();
+      starContext.lineWidth = 4;
+      starContext.lineJoin = 'round';
+      starContext.strokeStyle = theme === 'dark' ? '#141413' : '#ffffff';
+      starContext.stroke();
+      starContext.fillStyle = markerColor;
+      starContext.fill();
+      map.addImage('conference-star', starContext.getImageData(0, 0, 40, 40), { pixelRatio: 2 });
+      map.addLayer({
+        id: 'journal-venue-stars',
+        type: 'symbol',
+        source: 'journal-places',
+        filter: ['==', ['get', 'kind'], 'venue'],
+        layout: {
+          'icon-image': 'conference-star',
+          'icon-allow-overlap': true,
+        },
+      });
+
+      // Place every name independently, reserving space for labels and markers.
+      // Offsets move text only; the geographic coordinates remain unchanged.
+      const measure = document.createElement('canvas').getContext('2d');
+      measure.font = '700 13px Arial';
+      const width = map.getCanvas().clientWidth;
+      const height = map.getCanvas().clientHeight;
+      const projected = places.map((place, priority) => ({ ...place, priority, point: map.project(place.coordinates) }));
+      const markerBoxes = projected.map(({ point, kind }) => {
+        const radius = kind === 'venue' ? 10 : 6.5;
+        return { left: point.x - radius, top: point.y - radius, right: point.x + radius, bottom: point.y + radius };
+      });
+      const intersects = (a, b, gap = 4) =>
+        a.left < b.right + gap && a.right > b.left - gap &&
+        a.top < b.bottom + gap && a.bottom > b.top - gap;
+      const labelLayout = [];
+      const order = { venue: 0, place: 1, landmark: 2 };
+      for (const place of [...projected].sort((a, b) => order[a.kind] - order[b.kind] || a.priority - b.priority)) {
+        const textWidth = Math.ceil(measure.measureText(place.name).width * 1.12 + 8);
+        const textHeight = 22;
+        const preferred = place.point.x > width / 2 ? -1 : 1;
+        const directions = [[preferred, 0], [-preferred, 0], [0, -1], [0, 1], [preferred, -1], [-preferred, -1], [preferred, 1], [-preferred, 1]];
+        let position;
+        for (const distance of [12, 16, 22, 30, 42, 56, 72]) {
+          for (const [dx, dy] of directions) {
+            const x = place.point.x + dx * (textWidth / 2 + distance);
+            const y = place.point.y + dy * (textHeight / 2 + distance);
+            const box = { left: x - textWidth / 2, top: y - textHeight / 2, right: x + textWidth / 2, bottom: y + textHeight / 2 };
+            if (box.left < 10 || box.top < 10 || box.right > width - 10 || box.bottom > height - 10) continue;
+            if (markerBoxes.some((marker) => intersects(box, marker, 2))) continue;
+            if (labelLayout.some((label) => intersects(box, label.box))) continue;
+            const anchor = [dy < 0 ? 'bottom' : dy > 0 ? 'top' : '', dx > 0 ? 'left' : dx < 0 ? 'right' : ''].filter(Boolean).join('-');
+            position = { ...place, box, anchor, offset: [dx * distance / 13, dy * distance / 13] };
+            break;
+          }
+          if (position) break;
+        }
+        if (!position) throw new Error(`No clear label position for ${place.name}`);
+        labelLayout.push(position);
+      }
+      window.mapLabelLayout = labelLayout;
+      map.addSource('journal-labels', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: labelLayout.map((label) => ({
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: label.coordinates },
+            properties: { name: label.name, kind: label.kind, priority: label.priority, anchor: label.anchor, offset: label.offset },
+          })),
+        },
+      });
+      map.addLayer({
+        id: 'journal-place-names',
+        type: 'symbol',
+        source: 'journal-labels',
+        layout: {
+          'text-field': ['get', 'name'],
+          'text-font': ['Noto Sans Bold'],
+          'text-size': 13,
+          'symbol-sort-key': ['get', 'priority'],
+          'text-anchor': ['get', 'anchor'],
+          'text-offset': ['get', 'offset'],
+          'text-allow-overlap': true,
+          'text-max-width': 32,
+        },
+        paint: {
+          'text-color': theme === 'dark' ? '#faf9f5' : '#292825',
+          'text-halo-color': theme === 'dark' ? '#141413' : '#ffffff',
+          'text-halo-width': 2,
+        },
+      });
+      await new Promise((resolve) => map.once('idle', resolve));
+      window.mapReady = true;
+      return {
+        backgroundLayers,
+        visitedFont: map.getLayoutProperty('journal-place-names', 'text-font'),
+        center: map.getCenter().toArray(),
+        zoom: map.getZoom(),
+      };
+    };
+  </script>
+</body>
+</html>

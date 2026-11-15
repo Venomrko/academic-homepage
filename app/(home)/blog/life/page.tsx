@@ -6,13 +6,12 @@ import { ConceptStamp } from '@/components/concept-stamp';
 import { BlogEmptyState } from '@/components/blog-empty-state';
 import { blog } from '@/lib/source';
 import { formatDate } from '@/lib/format';
-import { profile } from '@/lib/data/profile';
 import { pageMetadata } from '@/lib/site-metadata';
 
 export const metadata = pageMetadata({
   path: '/blog/life',
   title: 'A space for life',
-  description: `Personal essays, reading, and everyday observations by ${profile.name}.`,
+  description: 'Personal essays, reading, and everyday observations.',
 });
 
 export default function PersonalEssaysPage() {
