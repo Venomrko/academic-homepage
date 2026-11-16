@@ -10,3 +10,8 @@ export function formatDate(value: string, month: 'short' | 'long' = 'short') {
     timeZone: 'UTC',
   }).format(new Date(`${date}T12:00:00Z`));
 }
+
+export function estimateReadingTime(text: string) {
+  const words = text.match(/\S+/g)?.length ?? 0;
+  return `${Math.max(1, Math.ceil(words / 200))} min`;
+}

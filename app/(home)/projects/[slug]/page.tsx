@@ -1,13 +1,16 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import type { TOCItemType } from 'fumadocs-core/toc';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { ArticleReader } from '@/components/article-reader';
 import { honors } from '@/lib/data/honors';
 import { projects } from '@/lib/data/projects';
 import { publications } from '@/lib/data/publications';
 import { ProjectVisual } from '@/components/project-visual';
 import { ProjectStudyFigure } from '@/components/project-study-figure';
 import { ProjectComponentArt } from '@/components/project-component-art';
+import { estimateReadingTime } from '@/lib/format';
 import { pageMetadata } from '@/lib/site-metadata';
 
 export function generateStaticParams() { return projects.map((project) => ({ slug: project.slug })); }
@@ -35,6 +38,51 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     ...(project.evaluation.figures ?? []),
     ...project.evaluation.findings.flatMap((finding) => finding.figure ? [finding.figure] : []),
   ] : [];
+  const readingTime = estimateReadingTime([
+    project.overview,
+    ...project.contributions.flatMap((item) => [item.title, item.description]),
+    ...(project.sections ?? []).flatMap((section) => [
+      section.title,
+      ...(section.paragraphs ?? []),
+      ...(section.items ?? []).flatMap((item) => [item.title, item.description]),
+      ...(section.figures ?? []).map((figure) => figure.caption),
+    ]),
+    ...(project.evaluation ? [
+      project.evaluation.introduction,
+      ...project.evaluation.findings.flatMap((finding) => [finding.title, finding.description]),
+      ...evaluationFigures.map((figure) => figure.caption),
+      project.evaluation.note,
+    ] : []),
+    ...projectHonors.flatMap((honor) => [honor.title, honor.organization, honor.year]),
+    ...relatedPapers.map((paper) => paper.title),
+    project.thesis?.title,
+    project.thesis?.reference,
+  ].join(' '));
+  const outline: TOCItemType[] = [
+    { title: 'Overview', url: '#project-overview', depth: 2 },
+    { title: 'My contribution', url: '#project-contributions', depth: 2 },
+    ...project.contributions.map((contribution, index) => ({
+      title: contribution.title, url: `#project-contribution-${index + 1}`, depth: 3,
+    })),
+    ...(project.sections ?? []).flatMap((section) => [
+      { title: section.title, url: `#project-${section.id}`, depth: 2 },
+      ...(section.items ?? []).map((item, index) => ({
+        title: item.title, url: `#project-${section.id}-item-${index + 1}`, depth: 3,
+      })),
+    ]),
+    ...(project.evaluation ? [
+      { title: 'Evaluation & findings', url: '#project-evaluation', depth: 2 },
+      ...project.evaluation.findings.map((finding, index) => ({
+        title: finding.title, url: `#project-evaluation-finding-${index + 1}`, depth: 3,
+      })),
+    ] : []),
+    ...(relatedPapers.length ? [
+      { title: 'Related research', url: '#project-related-research', depth: 2 },
+    ] : []),
+    ...(project.thesis ? [
+      { title: "From the master's thesis", url: '#project-thesis-source', depth: 2 },
+    ] : []),
+  ];
 
   return <main id="main-content" className="site-container inner-page project-detail">
     <Link href="/projects" className="back-link"><ArrowLeft size={15} aria-hidden="true" /> All projects</Link>
@@ -49,6 +97,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         <div><dt>Location</dt><dd>{project.location}</dd></div>
       </dl>
     </header>
+    <ArticleReader items={outline} readingTime={readingTime}>
     <ProjectVisual variant={project.visual} />
     <div className="project-detail-body">
       <section aria-labelledby="project-overview">
@@ -58,8 +107,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <section aria-labelledby="project-contributions">
         <h2 id="project-contributions">My contribution</h2>
         <ul className="project-contributions">
-          {project.contributions.map((contribution) => <li key={contribution.title}>
-            <h3>{contribution.title}</h3>
+          {project.contributions.map((contribution, index) => <li key={contribution.title}>
+            <h3 id={`project-contribution-${index + 1}`}>{contribution.title}</h3>
             <p>{contribution.description}</p>
           </li>)}
         </ul>
@@ -69,9 +118,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <h2 id={`project-${section.id}`}>{section.title}</h2>
           {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           {section.items && <ul className={`project-detail-items${section.items.some((item) => item.illustration) ? ' project-component-grid' : ''}`}>
-            {section.items.map((item) => <li key={item.title}>
+            {section.items.map((item, index) => <li key={item.title}>
               {item.illustration && <ProjectComponentArt illustration={item.illustration} label={item.title} />}
-              <h3>{item.title}</h3>
+              <h3 id={`project-${section.id}-item-${index + 1}`}>{item.title}</h3>
               <p>{item.description}</p>
             </li>)}
           </ul>}
@@ -100,9 +149,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </table>
         </div>
         <ul className="project-detail-items project-findings">
-          {project.evaluation.findings.map((finding) => <li key={finding.title}>
+          {project.evaluation.findings.map((finding, index) => <li key={finding.title}>
             <div>
-              <h3>{finding.title}</h3>
+              <h3 id={`project-evaluation-finding-${index + 1}`}>{finding.title}</h3>
               <p>{finding.description}</p>
             </div>
           </li>)}
@@ -131,5 +180,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         <p>{project.thesis.reference}</p>
       </section>}
     </div>
+    </ArticleReader>
   </main>;
 }

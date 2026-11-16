@@ -107,7 +107,7 @@ export function ServicesTravel({
 
   return <aside className="publication-services-rail" aria-labelledby="services-travel-title">
     <div className="services-travel-content" ref={contentRef}>
-      <h2 id="services-travel-title">Services &amp; Travel<span className="accent-period">.</span></h2>
+      <h2 id="services-travel-title">Service &amp; Travel<span className="accent-period">.</span></h2>
       <p className="sr-only" role="status" aria-live="polite">Showing {visibleCount} of {items.length} service and travel entries.</p>
       <div className="services-travel-window" id="services-travel-list" style={{ maxHeight }}>
         <ul className="services-travel-list" ref={listRef}>
@@ -125,19 +125,21 @@ export function ServicesTravel({
               <h3>{entry.title}{entry.showYearInTitle !== false && <> {entry.year}</>}</h3>
               {entry.upcoming && <span className="publication-badge publication-venue-badge services-travel-upcoming">Upcoming</span>}
             </div>
-            <div className="services-travel-meta">
-              <span className="services-travel-kind">{entry.kind === 'reviewer' ? 'Reviewer' : 'Attend'}</span>
-              {entry.reviewAccepted && <>
-                <span aria-hidden="true">·</span>
-                <time dateTime={entry.reviewAccepted.date} title="Reviewer acceptance date">{entry.reviewAccepted.label}</time>
-              </>}
-              {entry.period && <>
-                <span aria-hidden="true">·</span>
-                <time dateTime={entry.period.start} title="Conference dates">{entry.period.label}</time>
-              </>}
+            <div className="services-travel-details">
+              <div className="services-travel-meta">
+                <span className="services-travel-kind">{entry.kind === 'reviewer' ? 'Reviewer' : 'Attend'}</span>
+                {entry.reviewAccepted && <>
+                  <span aria-hidden="true">·</span>
+                  <time dateTime={entry.reviewAccepted.date} title="Reviewer acceptance date">{entry.reviewAccepted.label}</time>
+                </>}
+                {entry.period && <>
+                  <span aria-hidden="true">·</span>
+                  <time dateTime={entry.period.start} title="Conference dates">{entry.period.label}</time>
+                </>}
+              </div>
+              {entry.location && <p>{entry.location}</p>}
+              {entry.description && <p>{entry.description}</p>}
             </div>
-            {entry.location && <p>{entry.location}</p>}
-            {entry.description && <p>{entry.description}</p>}
           </li>)}
         </ul>
       </div>

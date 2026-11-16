@@ -12,6 +12,10 @@ async function visit(page: Page, path: string) {
   expect(response?.status(), path).toBe(200);
   await expect(page.locator('main#main-content')).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
+  if (path === '/') {
+    await expect(page.locator('.updates-layout')).toHaveAttribute('data-adaptive-ready', 'true');
+    await expect(page.locator('.updates-layout')).toHaveAttribute('data-fitting', 'false');
+  }
 }
 
 async function checkLayoutAndCapture(page: Page, name: string, testInfo: TestInfo) {
@@ -82,17 +86,117 @@ test('main pages fit each viewport and theme', async ({ page }, testInfo) => {
   expect(errors).toEqual([]);
 });
 
-test('news expands and collapses, and system theme follows the browser', async ({ page }, testInfo) => {
+test('news and honors expand independently, and system theme follows the browser', async ({ page }, testInfo) => {
   await visit(page, '/');
   await expect(page).toHaveTitle("Ren's Homepage");
   const visibleRows = page.locator('#news-table tbody tr[data-visible="true"]');
   const initialRows = await visibleRows.count();
+  const visibleHonors = page.locator('#honors-list .honor-entry[aria-hidden="false"]');
+  const initialHonors = await visibleHonors.count();
+  const totalHonors = await page.locator('#honors-list .honor-entry').count();
+  const documentTop = (selector: string) => page.locator(selector).evaluate(
+    (node) => node.getBoundingClientRect().top + window.scrollY,
+  );
+  const sideBySide = (page.viewportSize()?.width ?? 0) > 1000;
+  const honorsButtonTop = await documentTop('.honors-more');
+  if (sideBySide) {
+    expect(Math.abs(await documentTop('.news-more') - honorsButtonTop)).toBeLessThanOrEqual(1);
+    expect(initialRows).toBeLessThanOrEqual(10);
+    expect(initialHonors).toBeLessThanOrEqual(6);
+  } else {
+    expect(initialRows).toBe(10);
+    expect(initialHonors).toBe(6);
+  }
   await page.locator('.news-more').click();
   await expect(page.locator('.news-less')).toBeVisible();
   expect(await visibleRows.count()).toBeGreaterThan(initialRows);
+  await expect(visibleHonors).toHaveCount(initialHonors);
+  if (sideBySide) {
+    await expect.poll(async () =>
+      Math.abs(await documentTop('.honors-more') - honorsButtonTop),
+    ).toBeLessThanOrEqual(1);
+  }
   await page.locator('.news-less').click();
   await expect(visibleRows).toHaveCount(initialRows);
   await expect(page.locator('.news-more')).toBeVisible();
+
+  await expect.poll(() => page.locator('.news-section').evaluate((section) =>
+    section.getAnimations({ subtree: true }).filter((animation) => animation.playState === 'running').length,
+  )).toBe(0);
+  const newsButtonTop = await documentTop('.news-more');
+  await page.locator('.honors-more').click();
+  await expect(page.locator('.honors-less')).toBeVisible();
+  await expect(visibleHonors).toHaveCount(Math.min(initialHonors + 2, totalHonors));
+  await expect(page.locator('.honors-more')).toContainText(`(${totalHonors - initialHonors - 2})`);
+  await expect(visibleRows).toHaveCount(initialRows);
+  if (sideBySide) {
+    await expect.poll(async () =>
+      Math.abs(await documentTop('.news-more') - newsButtonTop),
+    ).toBeLessThanOrEqual(1);
+  }
+  await checkLayoutAndCapture(page, 'expanded-honors', testInfo);
+  // Equal expansion steps align again without one button operating the other side.
+  await page.locator('.news-more').click();
+  if (sideBySide) {
+    await expect.poll(async () =>
+      Math.abs(await documentTop('.news-less') - await documentTop('.honors-less')),
+    ).toBeLessThanOrEqual(1);
+    await expect.poll(async () =>
+      Math.abs(await documentTop('.news-less') - await documentTop('.honors-more')),
+    ).toBeLessThanOrEqual(1);
+  }
+  await checkLayoutAndCapture(page, 'expanded-both', testInfo);
+  // A second small batch can finish the honors independently of the news.
+  await page.locator('.honors-more').click();
+  await expect(visibleHonors).toHaveCount(Math.min(initialHonors + 4, totalHonors));
+  await expect(page.locator('.honors-more')).toHaveCount(0);
+  expect(await visibleRows.count()).toBeGreaterThan(initialRows);
+  await page.locator('.honors-less').click();
+  await expect(visibleHonors).toHaveCount(initialHonors);
+  expect(await visibleRows.count()).toBeGreaterThan(initialRows);
+  await page.locator('.news-less').click();
+  await expect(visibleRows).toHaveCount(initialRows);
+  await expect(page.locator('.honors-more')).toBeVisible();
+
+  const honorsTopBeforeSearch = await documentTop('.honors-more');
+  const search = page.getByRole('searchbox', { name: 'Search updates by date, category, or title' });
+  await search.fill('no matching update');
+  await expect(visibleRows).toHaveCount(0);
+  await expect(visibleHonors).toHaveCount(initialHonors);
+  if (sideBySide) {
+    expect(Math.abs(await documentTop('.honors-more') - honorsTopBeforeSearch)).toBeLessThanOrEqual(1);
+  }
+  await search.press('Escape');
+  await expect(visibleRows).toHaveCount(initialRows);
+  const totalRows = await page.locator('#news-table tbody tr[data-visible]').count();
+  await expect(page.locator('.news-more')).toContainText(`(${totalRows - initialRows})`);
+
+  if (sideBySide) {
+    const viewport = page.viewportSize()!;
+    for (const width of [1200, 1050, viewport.width]) {
+      await page.setViewportSize({ width, height: viewport.height });
+      await page.evaluate(() => new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      ));
+      await expect(page.locator('.updates-layout')).toHaveAttribute('data-fitting', 'false');
+      await expect.poll(async () =>
+        Math.abs(await documentTop('.news-more') - await documentTop('.honors-more')),
+      ).toBeLessThanOrEqual(1);
+      const clipped = await visibleHonors.locator('.honor-entry-inner').evaluateAll((entries) =>
+        entries.filter((entry) => entry.scrollHeight > entry.clientHeight + 1).length,
+      );
+      expect(clipped).toBe(0);
+      await page.locator('.news-more').click();
+      await page.locator('.honors-more').click();
+      await expect.poll(async () =>
+        Math.abs(await documentTop('.news-less') - await documentTop('.honors-less')),
+      ).toBeLessThanOrEqual(1);
+      await page.locator('.news-less').click();
+      await page.locator('.honors-less').click();
+    }
+    await expect(visibleRows).toHaveCount(initialRows);
+    await expect(visibleHonors).toHaveCount(initialHonors);
+  }
 
   if (testInfo.project.metadata.theme === 'system') {
     await page.emulateMedia({ colorScheme: 'light' });
@@ -104,6 +208,28 @@ test('news expands and collapses, and system theme follows the browser', async (
 
 test('publication panels stay open during a matching search', async ({ page }, testInfo) => {
   await visit(page, '/publications');
+  await expect(page.locator('#services-travel-title')).toHaveText('Service & Travel.');
+  const locatedServices = page.locator('.services-travel-entry:has(.services-travel-details > p)');
+  expect(await locatedServices.count()).toBeGreaterThan(0);
+  const mismatchedMetadata = await locatedServices.evaluateAll((entries) =>
+    entries.filter((entry) => {
+      const locationColor = getComputedStyle(entry.querySelector('p')!).color;
+      return [...entry.querySelectorAll('.services-travel-kind, .services-travel-meta time')]
+        .some((node) => getComputedStyle(node).color !== locationColor);
+    }).length,
+  );
+  expect(mismatchedMetadata).toBe(0);
+  const mismatchedFonts = await page.locator('.services-travel-entry').evaluateAll((entries) =>
+    entries.filter((entry) => [...entry.querySelectorAll('.services-travel-meta > *')]
+      .some((node) => getComputedStyle(node).fontFamily
+        !== getComputedStyle(entry.querySelector('h3')!).fontFamily)).length,
+  );
+  expect(mismatchedFonts).toBe(0);
+  const locationGaps = await locatedServices.evaluateAll((entries) =>
+    entries.map((entry) => entry.querySelector('p')!.getBoundingClientRect().top
+      - entry.querySelector('.services-travel-meta')!.getBoundingClientRect().bottom),
+  );
+  for (const gap of locationGaps) expect(gap).toBeCloseTo(3, 1);
   const paper = page.locator('#publication-lspo');
   const abstract = paper.getByRole('button', { name: 'ABS', exact: true });
   const citation = paper.getByRole('button', { name: 'CITATION', exact: true });
@@ -149,12 +275,85 @@ test('project and article details keep their illustrations and readable layout',
   ]) {
     await visit(page, path);
     await expect(page.locator(artwork)).toBeVisible();
+    await expect(page.locator('.reading-outline-time')).toHaveText(/^\d+ min read$/);
+    if ((page.viewportSize()?.width ?? 0) > 1023) {
+      await expect(page.locator('.reading-outline-time')).toBeVisible();
+    }
+    const pageWidths = await page.locator('#main-content').evaluate((main) => ({
+      main: main.getBoundingClientRect().width,
+      site: document.querySelector('.site-footer')!.getBoundingClientRect().width,
+      heading: main.querySelector('header')!.getBoundingClientRect().width,
+    }));
+    expect(Math.abs(pageWidths.main - pageWidths.site)).toBeLessThanOrEqual(1);
+    expect(Math.abs(pageWidths.heading - pageWidths.main)).toBeLessThanOrEqual(1);
     if (path.startsWith('/blog/')) {
+      const readingTime = await page.locator('.reading-outline-time').textContent();
+      await expect(page.locator('.article-meta')).toContainText(readingTime!);
       const published = await page.locator('meta[property="article:published_time"]').getAttribute('content');
       const modified = await page.locator('meta[property="article:modified_time"]').getAttribute('content');
       expect(modified).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(modified! >= published!).toBe(true);
     }
     await checkLayoutAndCapture(page, name, testInfo);
+  }
+});
+
+test('article trees navigate sections and track reading progress', async ({ page }) => {
+  for (const path of [
+    '/blog/efficient-inference-and-geometric-reasoning',
+    '/projects/climate-change-dialogue-system',
+  ]) {
+    await visit(page, path);
+    const outline = page.getByRole('navigation', { name: 'On this page' });
+    const progress = page.getByRole('progressbar', { name: 'Reading progress' });
+    const toggle = page.getByRole('button', { name: 'Toggle article outline' });
+    await expect(progress).toHaveAttribute('aria-valuenow', '0');
+
+    const compact = (page.viewportSize()?.width ?? 0) <= 1023;
+    if (compact) {
+      await expect(outline).toBeHidden();
+      await toggle.click();
+      await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+      await toggle.press('Escape');
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      await expect(toggle).toBeFocused();
+      await toggle.click();
+    }
+    await expect(outline).toBeVisible();
+    // Every entry points to an actual heading, including nested project sections.
+    const missingTargets = await outline.locator('a').evaluateAll((links) =>
+      links.filter((link) => !document.getElementById(
+        decodeURIComponent(link.getAttribute('href')!.slice(1)),
+      )).map((link) => link.getAttribute('href')),
+    );
+    expect(missingTargets).toEqual([]);
+
+    if (path.startsWith('/projects/')) {
+      const contribution = outline.locator('a[href="#project-contributions"]');
+      await contribution.click();
+      if (compact) await toggle.click();
+      await expect(contribution).toHaveAttribute('aria-expanded', 'true');
+      const child = outline.locator('a[href="#project-contribution-2"]');
+      await expect(child).toBeVisible();
+      await child.click();
+      await expect(page.locator('.reading-tree-link[aria-current="location"]')).toHaveAttribute('href', '#project-contribution-2');
+      if (compact) await toggle.click();
+    }
+
+    const target = outline.locator(':scope > div > .reading-tree > li > a').last();
+    const href = await target.getAttribute('href');
+    await target.click();
+    await expect(page.locator('.reading-tree-link[aria-current="location"]')).toHaveAttribute('href', href!);
+    if (compact) {
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      await expect(outline).toBeHidden();
+    }
+    await expect.poll(() => progress.getAttribute('aria-valuenow')).not.toBe('0');
+
+    await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
+    await expect(progress).toHaveAttribute('aria-valuenow', '100');
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await expect(progress).toHaveAttribute('aria-valuenow', '0');
+    await expect(page.locator('.reading-tree-link[aria-current="location"]')).toHaveCount(1);
   }
 });

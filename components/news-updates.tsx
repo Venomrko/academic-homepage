@@ -5,8 +5,9 @@ import { useState, type CSSProperties } from 'react';
 import { ArrowDown, ArrowUp, Search, X } from 'lucide-react';
 import { news } from '@/lib/data/news';
 import { formatDate } from '@/lib/format';
+import { updatesPageSize, useUpdatesLayout } from '@/components/updates-layout';
 
-const pageSize = 10;
+const pageSize = updatesPageSize.news;
 function sortDateValue(value: string) {
   if (/^\d{4}$/.test(value)) return `${value}-12-31`;
   if (/^\d{4}-\d{2}$/.test(value)) return `${value}-28`;
@@ -17,11 +18,18 @@ const updates = [...news].sort((a, b) => sortDateValue(b.date).localeCompare(sor
 
 export function NewsUpdates() {
   const [query, setQuery] = useState('');
-  const [visibleCount, setVisibleCount] = useState(pageSize);
+  const { newsCount, stageHeights } = useUpdatesLayout();
+  const [expansionStep, setExpansionStep] = useState(0);
   const [streamFrom, setStreamFrom] = useState<number | null>(null);
   const [streamSequence, setStreamSequence] = useState(0);
   const [filterSequence, setFilterSequence] = useState(0);
   const search = query.trim().toLocaleLowerCase();
+  const initialCount = search ? pageSize : newsCount;
+  const visibleCount = initialCount + expansionStep * pageSize;
+  const stageHeight = stageHeights[Math.min(expansionStep, stageHeights.length - 1)];
+  const stageStyle = !search && stageHeight
+    ? { '--updates-stage-height': `${stageHeight}px` } as CSSProperties
+    : undefined;
   const matchRank = new Map<number, number>();
   const matches = updates.filter((item, index) => {
     const isMatch = `${item.date} ${formatDate(item.date)} ${item.type} ${item.text}`
@@ -30,12 +38,13 @@ export function NewsUpdates() {
     if (isMatch) matchRank.set(index, matchRank.size);
     return isMatch;
   });
-  const canShowLess = visibleCount > pageSize;
-  const canShowMore = visibleCount < matches.length;
+  const canShowLess = expansionStep > 0;
+  const remaining = Math.max(0, matches.length - visibleCount);
+  const canShowMore = remaining > 0;
 
   function changeQuery(value: string) {
     setQuery(value);
-    setVisibleCount(pageSize);
+    setExpansionStep(0);
     setStreamFrom(null);
     setFilterSequence((sequence) => sequence + 1);
   }
@@ -43,16 +52,16 @@ export function NewsUpdates() {
   function showMore() {
     setStreamFrom(visibleCount);
     setStreamSequence((sequence) => sequence + 1);
-    setVisibleCount((count) => count + pageSize);
+    setExpansionStep((step) => step + 1);
   }
 
   function showLess() {
     setStreamFrom(null);
-    setVisibleCount(pageSize);
+    setExpansionStep(0);
   }
 
   return (
-    <section className="news-section" aria-labelledby="news-title">
+    <section className="news-section" aria-labelledby="news-title" data-initial-count={initialCount} data-filtered={Boolean(search)} style={stageStyle}>
       <div className="news-heading">
         <h2 id="news-title">News & Updates<span className="accent-period">.</span></h2>
         <div className="news-search" role="search" aria-label="News & Updates">
@@ -128,7 +137,7 @@ export function NewsUpdates() {
         )}
         {canShowMore && (
           <button className="news-more" type="button" aria-controls="news-table" onClick={showMore}>
-            See more <ArrowDown size={15} strokeWidth={1.5} aria-hidden="true" />
+            See more <span>({remaining})</span><ArrowDown size={15} strokeWidth={1.5} aria-hidden="true" />
           </button>
         )}
         </div>

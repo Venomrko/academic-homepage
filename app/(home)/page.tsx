@@ -5,6 +5,7 @@ import { SolarArtwork } from '@/components/solar-artwork';
 import { ResearchShowcase } from '@/components/research-showcase';
 import { NewsUpdates } from '@/components/news-updates';
 import { HonorsAwards } from '@/components/honors-awards';
+import { UpdatesLayout } from '@/components/updates-layout';
 import { ProfileLinks } from '@/components/profile-links';
 import { pageMetadata, siteTitle } from '@/lib/site-metadata';
 
@@ -36,9 +37,9 @@ export default function AboutPage() {
 
     <ResearchShowcase />
 
-    <div className="landing-width updates-layout">
+    <UpdatesLayout>
       <NewsUpdates />
       <HonorsAwards items={honors} />
-    </div>
+    </UpdatesLayout>
   </main>;
 }

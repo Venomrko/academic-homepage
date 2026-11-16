@@ -4,7 +4,6 @@ description: "A short description of your essay."
 date: 'YYYY-MM-DD'
 category: Life
 section: life
-readingTime: 3 min
 draft: true
 ---
 

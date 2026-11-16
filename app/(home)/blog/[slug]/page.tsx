@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { ArrowLeft } from 'lucide-react';
-import { InlineTOC } from 'fumadocs-ui/components/inline-toc';
+import { ArticleReader } from '@/components/article-reader';
 import { ConceptStamp } from '@/components/concept-stamp';
 import { blog } from '@/lib/source';
 import { formatDate } from '@/lib/format';
@@ -54,16 +54,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <span>{page.data.readingTime} read</span>
       </div>
     </header>
-    <article className="prose article-body" lang={page.data.lang}>
-      <InlineTOC items={page.data.toc} />
-      <MDX components={getMDXComponents()} />
-    </article>
-    <div className="article-end">
-      <span className="brand-orb" />
-      <p>Keep asking good questions.</p>
-      <Link href={listUrl} className="text-link">
-        <ArrowLeft size={15} aria-hidden="true" /> {page.data.section === 'life' ? 'Back to personal essays' : 'Back to the notes'}
-      </Link>
-    </div>
+    <ArticleReader items={page.data.toc} readingTime={page.data.readingTime}>
+      <article className="prose article-body" lang={page.data.lang}>
+        <MDX components={getMDXComponents()} />
+      </article>
+      <div className="article-end">
+        <span className="brand-orb" />
+        <p>Keep asking good questions.</p>
+        <Link href={listUrl} className="text-link">
+          <ArrowLeft size={15} aria-hidden="true" /> {page.data.section === 'life' ? 'Back to personal essays' : 'Back to the notes'}
+        </Link>
+      </div>
+    </ArticleReader>
   </main>;
 }
