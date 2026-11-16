@@ -10,6 +10,13 @@ type SummaryLayout = {
   ready: boolean;
 };
 
+type UpdatesPanel = 'news' | 'honors';
+type ExpansionAction = 'more' | 'less' | 'reset';
+type SummaryContextValue = SummaryLayout & {
+  steps: Record<UpdatesPanel, number>;
+  changeExpansion: (panel: UpdatesPanel, action: ExpansionAction) => void;
+};
+
 export const updatesPageSize = { news: 10, honors: 2 } as const;
 
 // Initial previews and subsequent expansion batches have different limits.
@@ -19,10 +26,12 @@ const defaults: SummaryLayout = {
   stageHeights: [],
   ready: false,
 };
-const SummaryContext = createContext(defaults);
+const SummaryContext = createContext<SummaryContextValue | null>(null);
 
 export function useUpdatesLayout() {
-  return useContext(SummaryContext);
+  const context = useContext(SummaryContext);
+  if (!context) throw new Error('Updates panels must be rendered within UpdatesLayout.');
+  return context;
 }
 
 function outerHeight(element: HTMLElement) {
@@ -42,6 +51,21 @@ export function UpdatesLayout({ children }: { children: ReactNode }) {
   const currentLayout = useRef(defaults);
   const [layout, setLayout] = useState(defaults);
   const [fitting, setFitting] = useState(true);
+  const [steps, setSteps] = useState({ news: 0, honors: 0 });
+
+  function changeExpansion(panel: UpdatesPanel, action: ExpansionAction) {
+    setSteps((previous) => {
+      const other = panel === 'news' ? 'honors' : 'news';
+      // Collapse to the other panel's current stage when it is above this one.
+      // Otherwise return to the initial preview without moving the other panel.
+      const nextStep = action === 'more'
+        ? previous[panel] + 1
+        : action === 'less' && previous[other] < previous[panel]
+          ? previous[other]
+          : 0;
+      return { ...previous, [panel]: nextStep };
+    });
+  }
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -154,7 +178,7 @@ export function UpdatesLayout({ children }: { children: ReactNode }) {
     return () => cancelAnimationFrame(frame);
   }, [layout]);
 
-  return <SummaryContext.Provider value={layout}>
+  return <SummaryContext.Provider value={{ ...layout, steps, changeExpansion }}>
     <div
       ref={rootRef}
       className="landing-width updates-layout"

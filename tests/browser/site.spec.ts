@@ -91,6 +91,7 @@ test('news and honors expand independently, and system theme follows the browser
   await expect(page).toHaveTitle("Ren's Homepage");
   const visibleRows = page.locator('#news-table tbody tr[data-visible="true"]');
   const initialRows = await visibleRows.count();
+  const totalRows = await page.locator('#news-table tbody tr[data-visible]').count();
   const visibleHonors = page.locator('#honors-list .honor-entry[aria-hidden="false"]');
   const initialHonors = await visibleHonors.count();
   const totalHonors = await page.locator('#honors-list .honor-entry').count();
@@ -146,16 +147,36 @@ test('news and honors expand independently, and system theme follows the browser
     ).toBeLessThanOrEqual(1);
   }
   await checkLayoutAndCapture(page, 'expanded-both', testInfo);
+  const onceExpandedRows = await visibleRows.count();
   // A second small batch can finish the honors independently of the news.
   await page.locator('.honors-more').click();
   await expect(visibleHonors).toHaveCount(Math.min(initialHonors + 4, totalHonors));
   await expect(page.locator('.honors-more')).toHaveCount(0);
   expect(await visibleRows.count()).toBeGreaterThan(initialRows);
   await page.locator('.honors-less').click();
-  await expect(visibleHonors).toHaveCount(initialHonors);
-  expect(await visibleRows.count()).toBeGreaterThan(initialRows);
+  await expect(visibleHonors).toHaveCount(Math.min(initialHonors + 2, totalHonors));
+  await expect(visibleRows).toHaveCount(onceExpandedRows);
+  await expect(page.locator('.honors-more')).toBeVisible();
+  if (sideBySide) {
+    await expect.poll(async () =>
+      Math.abs(await documentTop('.news-less') - await documentTop('.honors-less')),
+    ).toBeLessThanOrEqual(1);
+  }
+  // Once aligned, collapsing the news leaves the honors at their current stage.
   await page.locator('.news-less').click();
   await expect(visibleRows).toHaveCount(initialRows);
+  await expect(visibleHonors).toHaveCount(Math.min(initialHonors + 2, totalHonors));
+  // Collapse directly across multiple stages to the other panel's position.
+  await page.locator('.honors-more').click();
+  await expect(visibleHonors).toHaveCount(Math.min(initialHonors + 4, totalHonors));
+  await page.locator('.honors-less').click();
+  await expect(visibleHonors).toHaveCount(initialHonors);
+  await expect(visibleRows).toHaveCount(initialRows);
+  if (sideBySide) {
+    await expect.poll(async () =>
+      Math.abs(await documentTop('.news-more') - await documentTop('.honors-more')),
+    ).toBeLessThanOrEqual(1);
+  }
   await expect(page.locator('.honors-more')).toBeVisible();
 
   const honorsTopBeforeSearch = await documentTop('.honors-more');
@@ -168,7 +189,6 @@ test('news and honors expand independently, and system theme follows the browser
   }
   await search.press('Escape');
   await expect(visibleRows).toHaveCount(initialRows);
-  const totalRows = await page.locator('#news-table tbody tr[data-visible]').count();
   await expect(page.locator('.news-more')).toContainText(`(${totalRows - initialRows})`);
 
   if (sideBySide) {

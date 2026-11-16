@@ -18,8 +18,8 @@ const updates = [...news].sort((a, b) => sortDateValue(b.date).localeCompare(sor
 
 export function NewsUpdates() {
   const [query, setQuery] = useState('');
-  const { newsCount, stageHeights } = useUpdatesLayout();
-  const [expansionStep, setExpansionStep] = useState(0);
+  const { newsCount, stageHeights, steps, changeExpansion } = useUpdatesLayout();
+  const expansionStep = steps.news;
   const [streamFrom, setStreamFrom] = useState<number | null>(null);
   const [streamSequence, setStreamSequence] = useState(0);
   const [filterSequence, setFilterSequence] = useState(0);
@@ -44,7 +44,7 @@ export function NewsUpdates() {
 
   function changeQuery(value: string) {
     setQuery(value);
-    setExpansionStep(0);
+    changeExpansion('news', 'reset');
     setStreamFrom(null);
     setFilterSequence((sequence) => sequence + 1);
   }
@@ -52,12 +52,12 @@ export function NewsUpdates() {
   function showMore() {
     setStreamFrom(visibleCount);
     setStreamSequence((sequence) => sequence + 1);
-    setExpansionStep((step) => step + 1);
+    changeExpansion('news', 'more');
   }
 
   function showLess() {
     setStreamFrom(null);
-    setExpansionStep(0);
+    changeExpansion('news', 'less');
   }
 
   return (

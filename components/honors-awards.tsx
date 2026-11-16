@@ -9,8 +9,8 @@ import { updatesPageSize, useUpdatesLayout } from '@/components/updates-layout';
 const pageSize = updatesPageSize.honors;
 
 export function HonorsAwards({ items }: { items: readonly Honor[] }) {
-  const { honorsCount: initialCount, stageHeights } = useUpdatesLayout();
-  const [expansionStep, setExpansionStep] = useState(0);
+  const { honorsCount: initialCount, stageHeights, steps, changeExpansion } = useUpdatesLayout();
+  const expansionStep = steps.honors;
   const [streamFrom, setStreamFrom] = useState<number | null>(null);
   const [streamSequence, setStreamSequence] = useState(0);
   const ordered = [...items].sort((a, b) =>
@@ -26,12 +26,12 @@ export function HonorsAwards({ items }: { items: readonly Honor[] }) {
   function showMore() {
     setStreamFrom(visibleCount);
     setStreamSequence((sequence) => sequence + 1);
-    setExpansionStep((step) => step + 1);
+    changeExpansion('honors', 'more');
   }
 
   function showLess() {
     setStreamFrom(null);
-    setExpansionStep(0);
+    changeExpansion('honors', 'less');
   }
 
   return (
