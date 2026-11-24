@@ -1,5 +1,7 @@
 # Font sources and usage
 
+The font files listed here are in `public/fonts/`.
+
 ## Page typography
 
 The site serves two local variable WOFF2 files through `next/font/local` in

@@ -86,7 +86,7 @@ and is unaffected by this display formatting.
 All seven thumbnails are actual figures cropped from the local paper collection,
 converted to WebP, and served through Next.js Image with explicit dimensions.
 No scientific data or diagrams are redrawn. The source page, figure number, and
-crop coordinates are recorded in `public/images/publications/SOURCES.md`.
+crop coordinates are recorded in [publication asset sources](assets/publications.md).
 
 Previews share a 3:2 frame, 260px wide on desktop/mobile and 240px on tablet.
 Original image proportions are retained with `object-fit: contain`. LSPO now

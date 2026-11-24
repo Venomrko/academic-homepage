@@ -32,8 +32,8 @@ export function TravelMap({ journey }: { journey: Journey }) {
       role="img"
       aria-label={description}
       style={{
-        '--travel-map-light': `url("/images/travel/${journey}-light.webp")`,
-        '--travel-map-dark': `url("/images/travel/${journey}-dark.webp")`,
+        '--travel-map-light': `url("/images/blog/${journey}/maps/light.webp")`,
+        '--travel-map-dark': `url("/images/blog/${journey}/maps/dark.webp")`,
       } as CSSProperties}
     />
     <figcaption>

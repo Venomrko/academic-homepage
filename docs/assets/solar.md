@@ -1,6 +1,6 @@
 # Solar sphere texture
 
-`sphere-mask.png` is a lossless alpha mask captured from the existing Paper Shaders
+`public/images/solar/sphere-mask.png` is a lossless alpha mask captured from the existing Paper Shaders
 `Dithering` renderer, then encoded as a one-bit transparent PNG. It preserves the
 previous desktop sphere pixels rather than introducing a different illustration.
 The foreground colors and responsive placement remain in `app/global.css`.

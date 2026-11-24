@@ -115,7 +115,7 @@ review and improvement, not as evidence of deployed automatic retraining.
 The system workflow image is the original Figure 5-1, extracted from PDF page 68
 without the page header, personal identifiers, signatures, or surrounding text.
 It appears inside the case study in place of the decorative climate hero.
-See `public/images/projects/SOURCES.md` for its extraction and delivery details.
+See [project asset sources](assets/projects.md) for its extraction and delivery details.
 
 ### Figure-rich layout
 

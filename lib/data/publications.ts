@@ -26,13 +26,13 @@ export const publications: Publication[] = [
 		venue: "The 40th Annual Conference on Neural Information Processing Systems",
 		venueShort: "NeurIPS",
 		links: {
-			poster: "/images/publications/poster/neurips26.pdf",
+			poster: "/images/publications/lspo/poster.pdf",
 			arxiv: "https://arxiv.org/abs/2610.20350",
 			pdf: "https://arxiv.org/pdf/2610.20350",
 			code: "https://github.com/Venomrko/lspo",
 		},
 		image: {
-			src: "/images/publications/lspo-preview.webp",
+			src: "/images/publications/lspo/preview.webp",
 			alt: "LSPO Figure 1 comparing benchmark performance and showing rollout-to-direct alignment and energy versus correctness.",
 			width: 1001,
 			height: 434,
@@ -58,12 +58,12 @@ export const publications: Publication[] = [
 		venue: "The 43rd International Conference on Machine Learning",
 		venueShort: "ICML",
 		links: {
-			poster: "/images/publications/poster/icml26.pdf",
+			poster: "/images/publications/geometric-reasoner/poster.pdf",
 			arxiv: "https://arxiv.org/abs/2601.18832",
 			pdf: "https://arxiv.org/pdf/2601.18832",
 		},
 		image: {
-			src: "/images/publications/geometric-reasoner-preview.webp",
+			src: "/images/publications/geometric-reasoner/preview.webp",
 			alt: "The Geometric Reasoner Figure 2(c), showing the proposed manifold-informed latent foresight search.",
 			width: 1001,
 			height: 629,
@@ -90,13 +90,13 @@ export const publications: Publication[] = [
 		venueShort: "IJCAI",
 		distinctions: [{ label: "Oral", kind: "oral" }],
 		links: {
-			poster: "/images/publications/poster/ijcai26.pdf",
+			poster: "/images/publications/gogi-skip/poster.pdf",
 			arxiv: "https://arxiv.org/abs/2505.08392",
 			pdf: "https://arxiv.org/pdf/2505.08392",
 			website: "https://doi.org/10.24963/ijcai.2026/457",
 		},
 		image: {
-			src: "/images/publications/gogi-skip-preview.webp",
+			src: "/images/publications/gogi-skip/preview.webp",
 			alt: "Adaptive GoGI-Skip Figure 2(a), showing the goal-gradient importance calculation.",
 			width: 1001,
 			height: 659,
@@ -122,13 +122,13 @@ export const publications: Publication[] = [
 		venue: "The 48th Annual Meeting of the Cognitive Science Society",
 		venueShort: "CogSci",
 		links: {
-			poster: "/images/publications/poster/cogsci26.pdf",
+			poster: "/images/publications/ratchet-effect/poster.pdf",
 			arxiv: "https://arxiv.org/abs/2507.21166",
 			pdf: "https://arxiv.org/pdf/2507.21166",
 			website: "https://escholarship.org/uc/item/57b407jm",
 		},
 		image: {
-			src: "/images/publications/ratchet-effect.webp",
+			src: "/images/publications/ratchet-effect/preview.webp",
 			alt: "POLIS Figure 1 showing cumulative gains across evolutionary steps in interacting language model populations.",
 			width: 1001,
 			height: 615,
@@ -152,11 +152,11 @@ export const publications: Publication[] = [
 		venue: "The 32nd International Conference on Neural Information Processing",
 		venueShort: "ICONIP",
 		links: {
-			poster: "/images/publications/poster/iconip25.pdf",
+			poster: "/images/publications/factprompt/poster.pdf",
 			website: "https://doi.org/10.1007/978-981-95-4088-4_18",
 		},
 		image: {
-			src: "/images/publications/factprompt.webp",
+			src: "/images/publications/factprompt/preview.webp",
 			alt: "FactPrompt Figure 2 separating initial response generation, independent fact generation, and refinement.",
 			width: 1001,
 			height: 497,
@@ -184,11 +184,11 @@ export const publications: Publication[] = [
 		venueShort: "SMC",
 		distinctions: [{ label: "Oral", kind: "oral" }],
 		links: {
-			poster: "/images/publications/poster/smc25.pdf",
+			poster: "/images/publications/twin-prompt/poster.pdf",
 			website: "https://doi.org/10.1109/SMC58881.2025.11343657",
 		},
 		image: {
-			src: "/images/publications/twin-prompt-preview.webp",
+			src: "/images/publications/twin-prompt/preview.webp",
 			alt: "Twin Prompt's panel from Figure 1, illustrating problem reformulation and answer refinement.",
 			width: 1001,
 			height: 507,
@@ -215,11 +215,11 @@ export const publications: Publication[] = [
 		venue: "The International Joint Conference on Neural Networks",
 		venueShort: "IJCNN",
 		links: {
-			poster: "/images/publications/poster/ijcnn24.pdf",
+			poster: "/images/publications/heuristic-cot/poster.pdf",
 			website: "https://doi.org/10.1109/IJCNN60899.2024.10650937",
 		},
 		image: {
-			src: "/images/publications/heuristic-cot.webp",
+			src: "/images/publications/heuristic-cot/preview.webp",
 			alt: "Heuristic CoT Figure 1 comparing input-output instructions, chain-of-thought instructions, and knowledge-guided reasoning.",
 			width: 1001,
 			height: 683,

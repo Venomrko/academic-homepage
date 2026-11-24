@@ -1,3 +1,8 @@
+# Travel map sources
+
+Each journal's map pair is stored in `public/images/blog/<article-slug>/maps/`
+as `light.webp` and `dark.webp`.
+
 These static map thumbnails mark cities, major areas and selected representative sights mentioned in the travel journals. The light and dark images share the same extent and markers; no travel routes are drawn.
 
 Marked places use bold labels. Other labels are limited to countries and major cities, set in smaller, muted regular type.

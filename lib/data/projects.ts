@@ -119,14 +119,14 @@ export const projects: readonly Project[] = [
 				],
 				figures: [
 					{
-						src: "/images/projects/climate-embedding-architecture.webp",
+						src: "/images/projects/climate-change-dialogue-system/figures/embedding-architecture.webp",
 						width: 1496,
 						height: 1256,
 						alt: "C²Embedding bi-encoder architecture. Query and context are encoded separately, aggregated into vectors, and compared for semantic similarity.",
 						caption: "Figure 4-5 · C²Embedding bi-encoder architecture.",
 					},
 					{
-						src: "/images/projects/climate-reranker-architecture.webp",
+						src: "/images/projects/climate-change-dialogue-system/figures/reranker-architecture.webp",
 						width: 1172,
 						height: 1448,
 						alt: "C²Reranker cross-encoder architecture. Query and context tokens are encoded jointly before aggregation, dimensionality reduction, and similarity scoring.",
@@ -143,7 +143,7 @@ export const projects: readonly Project[] = [
 				],
 				figures: [
 					{
-						src: "/images/projects/climate-twin-prompt.webp",
+						src: "/images/projects/climate-change-dialogue-system/figures/twin-prompt.webp",
 						width: 1328,
 						height: 752,
 						alt: "Twin Prompt two-stage inference. An input passes through query reformulation and an initial response, followed by answer revision to produce the final response.",
@@ -158,7 +158,7 @@ export const projects: readonly Project[] = [
 					"A user question enters a pipeline that combines local domain knowledge with online search. C²Embedding retrieves candidate passages, C²Reranker refines their order, and the highest-ranked evidence becomes context for the language model. Twin Prompt guides question reformulation and answer refinement; the response then includes references that let the user inspect its sources.",
 				],
 				figures: [{
-					src: "/images/projects/climate-dialogue-workflow.webp",
+					src: "/images/projects/climate-change-dialogue-system/figures/dialogue-workflow.webp",
 					width: 1684,
 					height: 976,
 					alt: "Thesis system workflow: local documents and online search feed a passage collection; C²Embedding retrieves candidates, C²Reranker orders the evidence, and a language model uses Twin Prompt to generate a cited response. User feedback is collected separately.",
@@ -175,7 +175,7 @@ export const projects: readonly Project[] = [
 						description:
 							"A common loading interface accepts documents, webpages, structured files, database sources, images, and audio. This brings different knowledge sources into the retrieval workflow without requiring a separate user-facing process for each format.",
 						illustration: {
-							src: "/images/projects/climate-component-ingestion.svg",
+							src: "/images/projects/climate-change-dialogue-system/components/ingestion.svg",
 							width: 831,
 							height: 818,
 						},
@@ -185,7 +185,7 @@ export const projects: readonly Project[] = [
 						description:
 							"YAML-based adapters support providers including OpenAI, Google, Anthropic, Hugging Face, and Mistral AI. Model and generation settings can be changed independently of the document-loading and retrieval components.",
 						illustration: {
-							src: "/images/projects/climate-component-models.svg",
+							src: "/images/projects/climate-change-dialogue-system/components/models.svg",
 							width: 1920,
 							height: 634,
 						},
@@ -195,10 +195,10 @@ export const projects: readonly Project[] = [
 						description:
 							"DuckDuckGo search supplements the local knowledge base with web results for questions that depend on recent information. The retrieved material is incorporated into the context used for answer generation.",
 						illustration: {
-							src: "/images/projects/climate-component-search-poster.webp",
+							src: "/images/projects/climate-change-dialogue-system/components/search-poster.webp",
 							width: 640,
 							height: 410,
-							video: "/images/projects/climate-component-search.mp4",
+							video: "/images/projects/climate-change-dialogue-system/components/search.mp4",
 						},
 					},
 					{
@@ -206,7 +206,7 @@ export const projects: readonly Project[] = [
 						description:
 							"Answers cite the passages they draw on, allowing users to inspect the evidence behind a response and trace it back to its original sources.",
 						illustration: {
-							src: "/images/projects/climate-component-citations.svg",
+							src: "/images/projects/climate-change-dialogue-system/components/citations.svg",
 							width: 1920,
 							height: 497,
 						},
@@ -216,7 +216,7 @@ export const projects: readonly Project[] = [
 						description:
 							"Users can provide positive or negative ratings and written comments, collecting evidence for reviewing responses and informing later data and system improvements.",
 						illustration: {
-							src: "/images/projects/climate-component-feedback.webp",
+							src: "/images/projects/climate-change-dialogue-system/components/feedback.webp",
 							width: 768,
 							height: 304,
 						},
@@ -249,14 +249,14 @@ export const projects: readonly Project[] = [
 			],
 			figures: [
 				{
-					src: "/images/projects/climate-embedding-results.webp",
+					src: "/images/projects/climate-change-dialogue-system/figures/embedding-results.webp",
 					width: 1664,
 					height: 1208,
 					alt: "Embedding-model comparison on the thesis climate-domain test set. Star markers compare Hit@5 and MRR@5; C²Embedding reports 64.4% and 49.7%, respectively.",
 					caption: "Figure 4-6 · Embedding performance across the compared models.",
 				},
 				{
-					src: "/images/projects/climate-reranker-results.webp",
+					src: "/images/projects/climate-change-dialogue-system/figures/reranker-results.webp",
 					width: 1664,
 					height: 1208,
 					alt: "Reranking-model comparison on the thesis test set. C²Reranker reports Accuracy@1 of 71.5% and NDCG@10 of 91.1%; circle size represents model parameter count.",
@@ -269,7 +269,7 @@ export const projects: readonly Project[] = [
 					description:
 						"NDCG@10 was 64.6% for BM25, 84.2% for C²Embedding alone, and 91.1% for C²Embedding with C²Reranker. Adding the reranker improved the embedding-only pipeline by 6.9 percentage points.",
 					figure: {
-						src: "/images/projects/climate-retrieval-ablation.webp",
+						src: "/images/projects/climate-change-dialogue-system/figures/retrieval-ablation.webp",
 						width: 1416,
 						height: 820,
 						alt: "Retrieval ablation showing NDCG@10 of 64.6% for BM25, 75.8% for BM25 with C²Reranker, 84.2% for C²Embedding, and 91.1% for the combined C²Embedding and C²Reranker pipeline.",
@@ -281,7 +281,7 @@ export const projects: readonly Project[] = [
 					description:
 						"The thesis compared the system with Climate Answers and Chat Climate on a question about countries reporting early-warning-system status under the Sendai Framework. The integrated system retrieved the relevant information and returned a source-cited answer where the two comparison systems did not.",
 					figure: {
-						src: "/images/projects/climate-answer-example.webp",
+						src: "/images/projects/climate-change-dialogue-system/figures/answer-example.webp",
 						width: 1668,
 						height: 668,
 						alt: "Original thesis dialogue screenshot. The system answers a question about Sendai Framework early-warning reporting and includes three source references beneath its response.",
