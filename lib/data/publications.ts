@@ -9,7 +9,7 @@ export type Publication = {
 	distinctions?: { label: string; kind?: "oral" | "award" | "highlight" }[];
 	abstract?: string;
 	bibtex?: string;
-	links?: Partial<Record<"arxiv" | "pdf" | "code" | "website", string>>;
+	links?: Partial<Record<"arxiv" | "pdf" | "code" | "website" | "poster", string>>;
 	image?: { src: string; alt: string; width: number; height: number };
 };
 
@@ -26,6 +26,7 @@ export const publications: Publication[] = [
 		venue: "The 40th Annual Conference on Neural Information Processing Systems",
 		venueShort: "NeurIPS",
 		links: {
+			poster: "/images/publications/poster/neurips26.pdf",
 			arxiv: "https://arxiv.org/abs/2610.20350",
 			pdf: "https://arxiv.org/pdf/2610.20350",
 			code: "https://github.com/Venomrko/lspo",
@@ -57,6 +58,7 @@ export const publications: Publication[] = [
 		venue: "The 43rd International Conference on Machine Learning",
 		venueShort: "ICML",
 		links: {
+			poster: "/images/publications/poster/icml26.pdf",
 			arxiv: "https://arxiv.org/abs/2601.18832",
 			pdf: "https://arxiv.org/pdf/2601.18832",
 		},
@@ -88,6 +90,7 @@ export const publications: Publication[] = [
 		venueShort: "IJCAI",
 		distinctions: [{ label: "Oral", kind: "oral" }],
 		links: {
+			poster: "/images/publications/poster/ijcai26.pdf",
 			arxiv: "https://arxiv.org/abs/2505.08392",
 			pdf: "https://arxiv.org/pdf/2505.08392",
 			website: "https://doi.org/10.24963/ijcai.2026/457",
@@ -119,6 +122,7 @@ export const publications: Publication[] = [
 		venue: "The 48th Annual Meeting of the Cognitive Science Society",
 		venueShort: "CogSci",
 		links: {
+			poster: "/images/publications/poster/cogsci26.pdf",
 			arxiv: "https://arxiv.org/abs/2507.21166",
 			pdf: "https://arxiv.org/pdf/2507.21166",
 			website: "https://escholarship.org/uc/item/57b407jm",
@@ -148,6 +152,7 @@ export const publications: Publication[] = [
 		venue: "The 32nd International Conference on Neural Information Processing",
 		venueShort: "ICONIP",
 		links: {
+			poster: "/images/publications/poster/iconip25.pdf",
 			website: "https://doi.org/10.1007/978-981-95-4088-4_18",
 		},
 		image: {
@@ -179,6 +184,7 @@ export const publications: Publication[] = [
 		venueShort: "SMC",
 		distinctions: [{ label: "Oral", kind: "oral" }],
 		links: {
+			poster: "/images/publications/poster/smc25.pdf",
 			website: "https://doi.org/10.1109/SMC58881.2025.11343657",
 		},
 		image: {
@@ -209,6 +215,7 @@ export const publications: Publication[] = [
 		venue: "The International Joint Conference on Neural Networks",
 		venueShort: "IJCNN",
 		links: {
+			poster: "/images/publications/poster/ijcnn24.pdf",
 			website: "https://doi.org/10.1109/IJCNN60899.2024.10650937",
 		},
 		image: {

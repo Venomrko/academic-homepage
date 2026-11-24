@@ -5,7 +5,7 @@ export const contentUpdates = {
   about: '2026-11-10',
   news: '2026-11-10',
   honors: '2026-11-16',
-  publications: '2026-11-10',
+  publications: '2026-11-24',
   services: '2026-11-10',
   projects: '2026-11-10',
   cv: '2026-11-10',

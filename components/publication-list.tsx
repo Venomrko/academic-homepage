@@ -11,6 +11,7 @@ const externalActions = [
   { key: 'pdf', label: 'PDF' },
   { key: 'code', label: 'CODE' },
   { key: 'website', label: 'WEBSITE' },
+  { key: 'poster', label: 'POSTER' },
 ] as const;
 
 function VenueName({ name }: { name: string }) {
