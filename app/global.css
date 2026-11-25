@@ -820,6 +820,7 @@ html > body[data-scroll-locked] { margin-right: 0 !important; --removed-body-scr
 .cv-contact-row span, .cv-contact-row a { display: inline-flex; gap: 6px; align-items: center; }
 .cv-contact-row a:hover { color: var(--accent); }
 .cv-objective { font-family: var(--font-serif); font-size: 15.5px; color: var(--research-ink); margin-top: 18px; line-height: 1.7; padding: 14px 18px; background: var(--soft-surface); border-radius: 8px; border-inline-start: 3px solid var(--accent); }
+.cv-research-interests { margin-top: 8px; }
 .cv-section { margin-top: 36px; }
 .cv-section > h3 { color: var(--accent); font-family: var(--font-sans); font-size: 12px; letter-spacing: 1.8px; text-transform: uppercase; font-weight: 700; padding-bottom: 10px; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
 .cv-section > p.cv-note { font-size: 12px; color: var(--muted); margin-bottom: 16px; }

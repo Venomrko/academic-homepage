@@ -46,19 +46,19 @@ export const honors: readonly Honor[] = [
 	{
 		id: "postgraduate-scholarship-2024",
 		year: "2024",
-		title: "Second-class Postgraduate Scholarship",
+		title: "2nd-class Scholarship for Postgraduate Studies",
 		organization: "Hangzhou Normal University",
 	},
 	{
 		id: "postgraduate-scholarship-2023",
 		year: "2023",
-		title: "Third-class Postgraduate Scholarship",
+		title: "3rd-class Scholarship for Postgraduate Studies",
 		organization: "Hangzhou Normal University",
 	},
 	{
 		id: "postgraduate-scholarship-2022",
 		year: "2022",
-		title: "First-class Postgraduate Scholarship",
+		title: "1st-class Scholarship for Postgraduate Studies",
 		organization: "Hangzhou Normal University",
 	},
 ];

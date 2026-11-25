@@ -40,11 +40,13 @@ export default function CVPage() {
             <span><MapPin size={13} aria-hidden="true" />{profile.location}</span>
             <a href={`mailto:${profile.email}`}><Mail size={13} aria-hidden="true" />{profile.email}</a>
             <a href={profile.googleScholar} target="_blank" rel="noopener noreferrer"><GraduationCap size={13} aria-hidden="true" />Google Scholar</a>
+            <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a>
             {profile.orcid && <a href={profile.orcid} target="_blank" rel="noopener noreferrer"><OrcidIcon />ORCID</a>}
             {profile.dblp && <a href={profile.dblp} target="_blank" rel="noopener noreferrer"><Library size={13} aria-hidden="true" />dblp</a>}
           </div>
           <div className="cv-objective">
-            <p>{profile.phdStatement}</p>
+            <p>{cvData.objective}</p>
+            <p className="cv-research-interests"><strong>Research interests:</strong> {cvData.researchInterests}</p>
           </div>
         </header>
 
@@ -63,7 +65,7 @@ export default function CVPage() {
                   {item.coursework && (
                     <>
                       <br />
-                      Coursework: {item.coursework}
+                      {item.coursework}
                     </>
                   )}
                 </p>
